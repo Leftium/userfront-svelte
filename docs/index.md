@@ -29,3 +29,59 @@ Select the options as you go. In this example, we set up SvelteKit with the foll
 - Prettier
 
 Now our application is available at http://localhost:5173/
+
+## Routing
+
+We'll set up a simple app with routing. This is all we need to start adding authentication.
+
+Route        | Description
+------------ | ---------------------------------------         
+`/`          | Home page
+`/login`     | Login page
+`/reset`     | Password reset page
+`/dashboard` | User dashboard, for logged in users only
+
+Add `src/routes/+layout.svelte` with the following to add a simple navigation menu:
+
+```svelte
+<!-- src/routes/+layout.svelte -->
+<nav>
+	<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="/login">Login</a></li>
+		<li><a href="/reset">Reset</a></li>
+		<li><a href="/dashboard">Dashboard</a></li>
+	</ul>
+</nav>
+
+<slot />
+```
+
+Then add placeholders for each route:
+
+```svelte
+<!-- src/routes/+page -->
+<h1>Home</h1>
+```
+
+```svelte
+<!-- src/routes/login/+page -->
+<h1>Login</h1>
+```
+
+```svelte
+<!-- src/routes/reset/+page -->
+<h1>Reset</h1>
+```
+
+```svelte
+<!-- src/routes/dashboard/+page -->
+<h1>Dashboard</h1>
+```
+
+With our routes in place, we are ready to add authentication.
+
+
+
+
+
