@@ -26,13 +26,11 @@
 	});
 </script>
 
-<nav>
-	<ul>
-		<li><a href="/">Home</a></li>
-		<li><a href="/login">Login</a></li>
-		<li><a href="/reset">Reset</a></li>
-		<li><a href="/dashboard">Dashboard</a></li>
-	</ul>
-</nav>
+<center>
+	<a href="/">Home</a> |
+	<a href="/login">Login</a> |
+	<a href="/reset">Reset</a> |
+	<a href="/dashboard">Dashboard</a>
 
-<slot />
+	<slot />
+</center>

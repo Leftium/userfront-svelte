@@ -3,10 +3,24 @@
 
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+
+	const user = Userfront.user;
 </script>
 
 <h1>Dashboard</h1>
 
+<div>
+	<h3>{user.name}</h3>
+	<img src={user.image} alt="profile pic" />
+</div>
+
 <button on:click={() => Userfront.logout()}>Log out</button>
 
-<pre>{JSON.stringify(Userfront.user, null, 4)}</pre>
+<pre>{JSON.stringify(user, null, 4)}</pre>
+
+<style>
+	pre {
+		text-align: left;
+		max-width: 400px;
+	}
+</style>
