@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { PUBLIC_USERFRONT_GLOBAL_TENANT } from '$env/static/public';
+	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 
 	import Userfront from '@userfront/core';
-	Userfront.init(PUBLIC_USERFRONT_GLOBAL_TENANT);
+	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
 	export let data;
 </script>

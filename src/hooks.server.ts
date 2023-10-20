@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import {
-	PUBLIC_USERFRONT_GLOBAL_TENANT,
+	PUBLIC_USERFRONT_ACCOUNT_ID,
 	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 } from '$env/static/public';
 import { parseUserfrontCookies } from '$lib/util.js';
@@ -12,7 +12,7 @@ export async function handle({ event, resolve }) {
 
 	const userfrontPayloads = await parseUserfrontCookies(
 		cookies,
-		PUBLIC_USERFRONT_GLOBAL_TENANT,
+		PUBLIC_USERFRONT_ACCOUNT_ID,
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	);
 

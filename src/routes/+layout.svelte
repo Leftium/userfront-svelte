@@ -5,19 +5,19 @@
 	import { parseUserfrontCookies } from '$lib/util.js';
 
 	import {
-		PUBLIC_USERFRONT_GLOBAL_TENANT,
+		PUBLIC_USERFRONT_ACCOUNT_ID,
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	} from '$env/static/public';
 
 	import Userfront from '@userfront/core';
-	Userfront.init(PUBLIC_USERFRONT_GLOBAL_TENANT);
+	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
 	export let data;
 
 	beforeNavigate(async () => {
 		const userfrontPayloads = await parseUserfrontCookies(
 			document.cookie,
-			PUBLIC_USERFRONT_GLOBAL_TENANT,
+			PUBLIC_USERFRONT_ACCOUNT_ID,
 			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 		);
 
