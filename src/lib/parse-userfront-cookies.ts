@@ -56,17 +56,17 @@ export async function parseUserfrontCookies(
 	const userfrontPublicKey = atob(publicKeyBase64);
 	const publicKey = await jose.importSPKI(userfrontPublicKey, 'RS256');
 
-	const idToken = getCookie(`id.${tenantId}`, cookies);
-	const accessToken = getCookie(`access.${tenantId}`, cookies);
-	const refreshToken = getCookie(`refresh.${tenantId}`, cookies);
+	const idTokenEncoded = getCookie(`id.${tenantId}`, cookies);
+	const accessTokenEncoded = getCookie(`access.${tenantId}`, cookies);
+	const refreshTokenEncoded = getCookie(`refresh.${tenantId}`, cookies);
 
-	const id = (await verifyToken(idToken, publicKey)) as TokenPayload;
-	const access = (await verifyToken(accessToken, publicKey)) as ExtendedJWTPayload;
-	const refresh = (await verifyToken(refreshToken, publicKey)) as JWTPayload;
+	const idToken = (await verifyToken(idTokenEncoded, publicKey)) as TokenPayload;
+	const accessToken = (await verifyToken(accessTokenEncoded, publicKey)) as ExtendedJWTPayload;
+	const refreshToken = (await verifyToken(refreshTokenEncoded, publicKey)) as JWTPayload;
 
 	return {
-		id,
-		access,
-		refresh
+		idToken,
+		accessToken,
+		refreshToken
 	};
 }

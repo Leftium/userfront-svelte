@@ -10,13 +10,13 @@ export async function handle({ event, resolve }) {
 
 	const cookies = event.request.headers.get('cookie');
 
-	const userfrontPayloads = await parseUserfrontCookies(
+	const userfrontTokens = await parseUserfrontCookies(
 		cookies,
 		PUBLIC_USERFRONT_ACCOUNT_ID,
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	);
 
-	if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(pathname)) {
+	if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}
 

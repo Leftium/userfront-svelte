@@ -12,13 +12,13 @@
 
 	beforeNavigate(async (navigation) => {
 		const toPathname = navigation.to?.url.pathname as string;
-		const userfrontPayloads = await parseUserfrontCookies(
+		const userfrontTokens = await parseUserfrontCookies(
 			document.cookie,
 			PUBLIC_USERFRONT_ACCOUNT_ID,
 			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 		);
 
-		if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(toPathname)) {
+		if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(toPathname)) {
 			goto('/login');
 		}
 	});

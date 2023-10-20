@@ -107,7 +107,6 @@ PUBLIC_USERFRONT_PUBLIC_KEY_BASE64=
 USERFRONT_API_KEY=
 ```
 
-
 ## Signup, login, and password reset
 
 We'll start by adding a signup form to the home page.
@@ -155,13 +154,11 @@ Now we can add the signup form to the home page by replacing the contents of `sr
 
 Now the home page has your signup form. Try signing up a user.
 
-
 ## Test mode
 
 The form is in "Test mode" by default, which will create user records in a test environment you can view separately in your Userfront dashboard.
 
 ![image](https://github.com/Leftium/userfront-svelte/assets/381217/4928d31f-c609-4b27-af7d-5f3ba6020a56)
-
 
 ## Login and password reset
 
@@ -232,10 +229,7 @@ Replace the `src/routes/dashboard/+page.svelte` file with the following:
 		max-width: 400px;
 	}
 </style>
-
 ```
-
-
 
 ## Protected route in SvelteKit
 
@@ -266,13 +260,13 @@ export async function handle({ event, resolve }) {
 
 	const cookies = event.request.headers.get('cookie');
 
-	const userfrontPayloads = await parseUserfrontCookies(
+	const userfrontTokens = await parseUserfrontCookies(
 		cookies,
 		PUBLIC_USERFRONT_ACCOUNT_ID,
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	);
 
-	if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(pathname)) {
+	if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}
 
@@ -303,13 +297,13 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 
 	beforeNavigate(async (navigation) => {
 		const toPathname = navigation.to?.url.pathname as string;
-		const userfrontPayloads = await parseUserfrontCookies(
+		const userfrontTokens = await parseUserfrontCookies(
 			document.cookie,
 			PUBLIC_USERFRONT_ACCOUNT_ID,
 			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 		);
 
-		if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(toPathname)) {
+		if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(toPathname)) {
 			goto('/login');
 		}
 	});
@@ -323,5 +317,4 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 
 	<slot />
 </center>
-
 ```
