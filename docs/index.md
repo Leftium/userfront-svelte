@@ -243,7 +243,7 @@ Usually, we don't want users to be able to view the dashboard unless they are lo
 
 Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
 
-SvelteKit has both server-side and client-side routing, so we need to redirect in two places.
+SvelteKit has both server-side and client-side routing, so we need to redirect in both.
 
 `parseUserfrontCookies()` is a helper function that parses/decodes Userfront cookies on both the server and client.
 
