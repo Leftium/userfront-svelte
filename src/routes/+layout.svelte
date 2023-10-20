@@ -1,3 +1,8 @@
+<script lang="ts">
+	import Userfront from '@userfront/core';
+	Userfront.init('5nxgg68b');
+</script>
+
 <nav>
 	<ul>
 		<li><a href="/">Home</a></li>
