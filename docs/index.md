@@ -172,3 +172,14 @@ Continue by adding your login and password reset forms in the same way that you 
 
 <PasswordResetForm />
 ```
+
+At this point, your signup, login, and password reset should all be functional.
+
+Your users can sign up, log in, and reset their password.
+
+
+## Protected route in SvelteKit
+
+Usually, we don't want users to be able to view the dashboard unless they are logged in. This is known as protecting a route.
+
+Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
