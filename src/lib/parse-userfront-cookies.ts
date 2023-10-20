@@ -28,10 +28,13 @@ function getCookie(name: string, cookieString: string | null) {
 	return cookieObject[name] || null;
 }
 
-async function verifyToken(token: string | null, publicKey: KeyLike) {
+export async function verifyToken(publicKeyBase64: string, token?: string | null) {
 	if (!token) {
 		return null;
 	}
+
+	const userfrontPublicKey = atob(publicKeyBase64);
+	const publicKey = await jose.importSPKI(userfrontPublicKey, 'RS256');
 
 	try {
 		const { payload } = await jose.jwtVerify(token, publicKey, {
@@ -40,33 +43,29 @@ async function verifyToken(token: string | null, publicKey: KeyLike) {
 		return payload;
 	} catch (error) {
 		console.error(error);
-		return null;
 	}
+	return null;
 }
 
-export async function parseUserfrontCookies(
-	cookies: string | null,
-	tenantId: string,
-	publicKeyBase64: string
-) {
+export async function userfrontCookieToTokens(cookies: string | null, tenantId: string) {
 	if (!cookies) {
 		return null;
 	}
 
-	const userfrontPublicKey = atob(publicKeyBase64);
-	const publicKey = await jose.importSPKI(userfrontPublicKey, 'RS256');
+	const accessTokenName = `access.${tenantId}`;
+	const idTokenName = `id.${tenantId}`;
+	const refreshTokenName = `refresh.${tenantId}`;
 
-	const idTokenEncoded = getCookie(`id.${tenantId}`, cookies);
-	const accessTokenEncoded = getCookie(`access.${tenantId}`, cookies);
-	const refreshTokenEncoded = getCookie(`refresh.${tenantId}`, cookies);
-
-	const idToken = (await verifyToken(idTokenEncoded, publicKey)) as TokenPayload;
-	const accessToken = (await verifyToken(accessTokenEncoded, publicKey)) as ExtendedJWTPayload;
-	const refreshToken = (await verifyToken(refreshTokenEncoded, publicKey)) as JWTPayload;
+	const idToken = getCookie(accessTokenName, cookies);
+	const accessToken = getCookie(idTokenName, cookies);
+	const refreshToken = getCookie(refreshTokenName, cookies);
 
 	return {
-		idToken,
+		accessTokenName,
+		idTokenName,
+		refreshTokenName,
 		accessToken,
+		idToken,
 		refreshToken
 	};
 }

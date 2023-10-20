@@ -18,6 +18,10 @@
 
 <pre>{JSON.stringify(user, null, 4)}</pre>
 
+<hr />
+
+<pre>{JSON.stringify(Userfront.tokens, null, 4)}</pre>
+
 <style>
 	pre {
 		text-align: left;

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { beforeNavigate, goto } from '$app/navigation';
-	import { parseUserfrontCookies } from '$lib/index.js';
+
+	import { userfrontCookieToTokens, verifyToken } from '$lib/index.js';
 
 	import {
 		PUBLIC_USERFRONT_ACCOUNT_ID,
@@ -12,13 +13,18 @@
 
 	beforeNavigate(async (navigation) => {
 		const toPathname = navigation.to?.url.pathname as string;
-		const userfrontTokens = await parseUserfrontCookies(
+
+		const userfrontTokens = await userfrontCookieToTokens(
 			document.cookie,
-			PUBLIC_USERFRONT_ACCOUNT_ID,
-			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+			PUBLIC_USERFRONT_ACCOUNT_ID
 		);
 
-		if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(toPathname)) {
+		const accessPayload = await verifyToken(
+			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
+			userfrontTokens?.accessToken
+		);
+
+		if (!accessPayload && !['/', '/login', '/reset'].includes(toPathname)) {
 			goto('/login');
 		}
 	});
