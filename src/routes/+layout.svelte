@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { beforeNavigate, goto } from '$app/navigation';
-	import { parseUserfrontCookies } from '$lib';
+	import { parseUserfrontCookies } from '$lib/index.js';
 
 	import {
 		PUBLIC_USERFRONT_ACCOUNT_ID,

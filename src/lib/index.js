@@ -1,5 +1,7 @@
 // Reexport your entry components here
 import Userfront from '@userfront/core';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { parseUserfrontCookies } from './parse-userfront-cookies';
 
 
