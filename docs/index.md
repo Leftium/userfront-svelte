@@ -86,6 +86,29 @@ Then add placeholders for each route:
 
 With our routes in place, we are ready to add authentication.
 
+## Userfront environment variables
+
+Add the file `env.locals` to the root of your project folder and fill in your account details.
+They will be used in the next steps.
+
+Instead of hard-coding them, SvelteKit provides access to environment variables:
+
+- [$env/static/private](https://kit.svelte.dev/docs/modules#$env-static-private)
+- [$env/static/public](https://kit.svelte.dev/docs/modules#$env-static-public)
+
+```sh
+# /env.locals
+
+# Find your account (global tenant) id here: https://userfront.com/test/dashboard/settings
+PUBLIC_USERFRONT_ACCOUNT_ID=
+
+# Find your key here (use base64 version): https://userfront.com/test/dashboard/jwt
+PUBLIC_USERFRONT_PUBLIC_KEY_BASE64=
+
+# Find your key here: https://userfront.com/test/dashboard/api-keys
+USERFRONT_API_KEY=
+```
+
 
 ## Signup, login, and password reset
 
