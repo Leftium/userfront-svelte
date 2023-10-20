@@ -16,7 +16,6 @@ export async function handle({ event, resolve }) {
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	);
 
-	console.log(`handle()`);
 	if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}

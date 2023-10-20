@@ -30,7 +30,6 @@ function getCookie(name: string, cookieString: string | null) {
 
 async function verifyToken(token: string | null, publicKey: KeyLike) {
 	if (!token) {
-		console.log('Missing token!');
 		return null;
 	}
 
@@ -60,8 +59,6 @@ export async function parseUserfrontCookies(
 	const idToken = getCookie(`id.${tenantId}`, cookies);
 	const accessToken = getCookie(`access.${tenantId}`, cookies);
 	const refreshToken = getCookie(`refresh.${tenantId}`, cookies);
-
-	console.log(idToken, accessToken);
 
 	const id = (await verifyToken(idToken, publicKey)) as TokenPayload;
 	const access = (await verifyToken(accessToken, publicKey)) as ExtendedJWTPayload;
