@@ -1,7 +1,8 @@
 # Userfront Svelte auth example
+
 In this example, we will add authentication and access control to a SvelteKit application.
 
-The the `userfront-svelte` *does* work with plain Svelte, but we will use SvelteKit for setup and routing.
+The the `userfront-svelte` _does_ work with plain Svelte, but we will use SvelteKit for setup and routing.
 
 ## Svelte authentication
 
@@ -34,12 +35,12 @@ Now our application is available at [http://localhost:5173/](http://localhost:51
 
 We'll set up a simple app with routing. This is all we need to start adding authentication.
 
-Route        | Description
------------- | ---------------------------------------         
-`/`          | Home page
-`/login`     | Login page
-`/reset`     | Password reset page
-`/dashboard` | User dashboard, for logged in users only
+| Route        | Description                              |
+| ------------ | ---------------------------------------- |
+| `/`          | Home page                                |
+| `/login`     | Login page                               |
+| `/reset`     | Password reset page                      |
+| `/dashboard` | User dashboard, for logged in users only |
 
 Add `src/routes/+layout.svelte` with the following to add a simple navigation menu:
 
@@ -61,21 +62,25 @@ Then add placeholders for each route:
 
 ```svelte
 <!-- src/routes/+page -->
+
 <h1>Home</h1>
 ```
 
 ```svelte
 <!-- src/routes/login/+page -->
+
 <h1>Login</h1>
 ```
 
 ```svelte
 <!-- src/routes/reset/+page -->
+
 <h1>Reset</h1>
 ```
 
 ```svelte
 <!-- src/routes/dashboard/+page -->
+
 <h1>Dashboard</h1>
 ```
 
@@ -160,15 +165,10 @@ Continue by adding your login and password reset forms in the same way that you 
 <!-- src/routes/reset/+page.svelte -->
 
 <script lang="ts">
-	import { ResetForm } from 'userfront-svelte';
+	import { PasswordResetForm } from 'userfront-svelte';
 </script>
 
 <h1>Reset</h1>
 
-<ResetForm />
+<PasswordResetForm />
 ```
-
-
-
-
-
