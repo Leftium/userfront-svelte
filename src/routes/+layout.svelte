@@ -12,8 +12,6 @@
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	export let data;
-
 	beforeNavigate(async () => {
 		const userfrontPayloads = await parseUserfrontCookies(
 			document.cookie,
