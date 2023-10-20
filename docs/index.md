@@ -46,16 +46,14 @@ Add `src/routes/+layout.svelte` with the following to add a simple navigation me
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
-<nav>
-	<ul>
-		<li><a href="/">Home</a></li>
-		<li><a href="/login">Login</a></li>
-		<li><a href="/reset">Reset</a></li>
-		<li><a href="/dashboard">Dashboard</a></li>
-	</ul>
-</nav>
+<center>
+	<a href="/">Home</a> |
+	<a href="/login">Login</a> |
+	<a href="/reset">Reset</a> |
+	<a href="/dashboard">Dashboard</a>
 
-<slot />
+	<slot />
+</center>
 ```
 
 Then add placeholders for each route:
@@ -125,24 +123,20 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 ```svelte
 <!-- src/routes/+layout.svelte --!>
 
-
-
 <script lang="ts">
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 </script>
 
-<nav>
-	<ul>
-		<li><a href="/">Home</a></li>
-		<li><a href="/login">Login</a></li>
-		<li><a href="/reset">Reset</a></li>
-		<li><a href="/dashboard">Dashboard</a></li>
-	</ul>
-</nav>
+<center>
+	<a href="/">Home</a> |
+	<a href="/login">Login</a> |
+	<a href="/reset">Reset</a> |
+	<a href="/dashboard">Dashboard</a>
 
-<slot />
+	<slot />
+</center>
 ```
 
 Now we can add the signup form to the home page by replacing the contents of `src/routes/+page.svelte` with the template from the instructions:
@@ -217,13 +211,27 @@ Replace the `src/routes/dashboard/+page.svelte` file with the following:
 
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+
+	const user = Userfront.user;
 </script>
 
 <h1>Dashboard</h1>
 
+<div>
+	<h3>{user.name}</h3>
+	<img src={user.image} alt="profile pic" />
+</div>
+
 <button on:click={() => Userfront.logout()}>Log out</button>
 
-<pre>{JSON.stringify(Userfront.user, null, 4)}</pre>
+<pre>{JSON.stringify(user, null, 4)}</pre>
+
+<style>
+	pre {
+		text-align: left;
+		max-width: 400px;
+	}
+</style>
 
 ```
 
