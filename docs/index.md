@@ -2,7 +2,7 @@
 
 In this example, we will add authentication and access control to a SvelteKit application.
 
-The the `userfront-svelte` _does_ work with plain Svelte, but we will use SvelteKit for setup and routing.
+The `userfront-svelte` package _does_ work with plain Svelte, but we will use SvelteKit for setup and routing.
 
 ## Svelte authentication
 
