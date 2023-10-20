@@ -99,14 +99,14 @@ npm install -D @userfront/toolkit --save
 
 We will use Userfront tools on multiple pages, so we can initialize it once in the `+layout.svelte` file.
 
-Replace `USERFRONT_TENANT_ID` with your Userfront tenant id. (From your [dashboard](https://userfront.com/dashboard))
-
 ```svelte
 <!-- src/routes/+layout.svelte --!>
 
+import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+
 <script lang="ts">
 	import Userfront from '@userfront/core';
-	Userfront.init('USERFRONT_TENANT_ID');
+	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 </script>
 
 <nav>
@@ -176,6 +176,30 @@ Continue by adding your login and password reset forms in the same way that you 
 At this point, your signup, login, and password reset should all be functional.
 
 Your users can sign up, log in, and reset their password.
+
+## Dashboard page
+
+Whenever a user does log in, we want to show them some relevant information and also give them the ability to log out.
+
+We can log the user out by calling `Userfront.logout()`.
+
+Replace the `src/routes/dashboard/+page.svelte` file with the following:
+
+```svelte
+<script lang="ts">
+	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+
+	import Userfront from '@userfront/core';
+	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+</script>
+
+<h1>Dashboard</h1>
+
+<button on:click={() => Userfront.logout()}>Log out</button>
+
+```
+
+
 
 
 ## Protected route in SvelteKit
