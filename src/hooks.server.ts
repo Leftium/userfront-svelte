@@ -20,7 +20,5 @@ export async function handle({ event, resolve }) {
 		throw redirect(302, '/login');
 	}
 
-	event.locals = { userfrontPayloads };
-
 	return resolve(event);
 }
