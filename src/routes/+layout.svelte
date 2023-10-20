@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { beforeNavigate, goto } from '$app/navigation';
-	import { page } from '$app/stores';
-
 	import { parseUserfrontCookies } from '$lib';
 
 	import {
@@ -12,15 +10,15 @@
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	beforeNavigate(async () => {
+	beforeNavigate(async (navigation) => {
+		const toPathname = navigation.to?.url.pathname as string;
 		const userfrontPayloads = await parseUserfrontCookies(
 			document.cookie,
 			PUBLIC_USERFRONT_ACCOUNT_ID,
 			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 		);
 
-		if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes($page.url.pathname)) {
-			console.log('goto /login');
+		if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(toPathname)) {
 			goto('/login');
 		}
 	});

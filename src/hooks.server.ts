@@ -8,7 +8,7 @@ import { parseUserfrontCookies } from '$lib';
 export async function handle({ event, resolve }) {
 	const { pathname } = event.url;
 
-	const cookies = event.request.headers.get('cookie') || '';
+	const cookies = event.request.headers.get('cookie');
 
 	const userfrontPayloads = await parseUserfrontCookies(
 		cookies,
@@ -17,7 +17,6 @@ export async function handle({ event, resolve }) {
 	);
 
 	console.log(`handle()`);
-	console.log(userfrontPayloads);
 	if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}

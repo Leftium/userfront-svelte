@@ -46,10 +46,14 @@ async function verifyToken(token: string | null, publicKey: KeyLike) {
 }
 
 export async function parseUserfrontCookies(
-	cookies: string,
+	cookies: string | null,
 	tenantId: string,
 	publicKeyBase64: string
 ) {
+	if (!cookies) {
+		return null;
+	}
+
 	const userfrontPublicKey = atob(publicKeyBase64);
 	const publicKey = await jose.importSPKI(userfrontPublicKey, 'RS256');
 
