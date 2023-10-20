@@ -1,7 +1,7 @@
 # Userfront Svelte auth example
 In this example, we will add authentication and access control to a SvelteKit application.
 
-The `userfront-svelte` works with plain Svelte, but we will use SvelteKit for setup and routing.
+The the `userfront-svelte` *does* work with plain Svelte, but we will use SvelteKit for setup and routing.
 
 ## Svelte authentication
 
@@ -131,6 +131,43 @@ Now we can add the signup form to the home page by replacing the contents of `sr
 ```
 
 Now the home page has your signup form. Try signing up a user.
+
+
+## Test mode
+
+The form is in "Test mode" by default, which will create user records in a test environment you can view separately in your Userfront dashboard.
+
+![image](https://github.com/Leftium/userfront-svelte/assets/381217/4928d31f-c609-4b27-af7d-5f3ba6020a56)
+
+
+## Login and password reset
+
+Continue by adding your login and password reset forms in the same way that you added your signup form:
+
+```svelte
+<!-- src/routes/login/+page.svelte -->
+
+<script lang="ts">
+	import { LoginForm } from 'userfront-svelte';
+</script>
+
+<h1>Login</h1>
+
+<LoginForm />
+```
+
+```svelte
+<!-- src/routes/reset/+page.svelte -->
+
+<script lang="ts">
+	import { ResetForm } from 'userfront-svelte';
+</script>
+
+<h1>Reset</h1>
+
+<ResetForm />
+```
+
 
 
 
