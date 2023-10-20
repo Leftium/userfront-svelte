@@ -2,7 +2,7 @@
 	import { beforeNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
-	import { parseUserfrontCookies } from '$lib/util.js';
+	import { parseUserfrontCookies } from '$lib';
 
 	import {
 		PUBLIC_USERFRONT_ACCOUNT_ID,

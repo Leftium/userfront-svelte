@@ -3,7 +3,7 @@ import {
 	PUBLIC_USERFRONT_ACCOUNT_ID,
 	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 } from '$env/static/public';
-import { parseUserfrontCookies } from '$lib/util.js';
+import { parseUserfrontCookies } from '$lib';
 
 export async function handle({ event, resolve }) {
 	const { pathname } = event.url;
