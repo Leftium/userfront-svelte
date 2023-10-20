@@ -125,9 +125,10 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 ```svelte
 <!-- src/routes/+layout.svelte --!>
 
-import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
+
 
 <script lang="ts">
+	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 </script>
