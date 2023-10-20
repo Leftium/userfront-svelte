@@ -28,7 +28,7 @@ Select the options as you go. In this example, we set up SvelteKit with the foll
 - ESLint
 - Prettier
 
-Now our application is available at http://localhost:5173/
+Now our application is available at [http://localhost:5173/](http://localhost:5173/)
 
 ## Routing
 
@@ -81,6 +81,56 @@ Then add placeholders for each route:
 
 With our routes in place, we are ready to add authentication.
 
+
+## Signup, login, and password reset
+
+We'll start by adding a signup form to the home page.
+
+Install the Userfront Toolkit with:
+
+```sh
+npm install -D @userfront/toolkit --save
+```
+
+We will use Userfront tools on multiple pages, so we can initialize it once in the `+layout.svelte` file.
+
+Replace `USERFRONT_TENANT_ID` with your Userfront tenant id. (From your [dashboard](https://userfront.com/dashboard))
+
+```svelte
+<!-- src/routes/+layout.svelte --!>
+
+<script lang="ts">
+	import Userfront from '@userfront/core';
+	Userfront.init('USERFRONT_TENANT_ID');
+</script>
+
+<nav>
+	<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="/login">Login</a></li>
+		<li><a href="/reset">Reset</a></li>
+		<li><a href="/dashboard">Dashboard</a></li>
+	</ul>
+</nav>
+
+<slot />
+```
+
+Now we can add the signup form to the home page by replacing the contents of `src/routes/+page.svelte` with the template from the instructions:
+
+```svelte
+<!-- src/routes/+page.svelte -->
+
+<script lang="ts">
+	import { SignupForm } from 'userfront-svelte';
+</script>
+
+<h1>Home</h1>
+
+<SignupForm />
+```
+
+Now the home page has your signup form. Try signing up a user.
 
 
 
