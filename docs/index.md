@@ -205,6 +205,8 @@ Your users can sign up, log in, and reset their password.
 
 Whenever a user does log in, we want to show them some relevant information and also give them the ability to log out.
 
+For the dashboard page, we can add information about the user by referencing the `Userfront.user` object.
+
 We can log the user out by calling `Userfront.logout()`.
 
 Replace the `src/routes/dashboard/+page.svelte` file with the following:
@@ -221,8 +223,9 @@ Replace the `src/routes/dashboard/+page.svelte` file with the following:
 
 <button on:click={() => Userfront.logout()}>Log out</button>
 
-```
+<pre>{JSON.stringify(Userfront.user, null, 4)}</pre>
 
+```
 
 
 
