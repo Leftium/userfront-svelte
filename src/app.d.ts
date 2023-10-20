@@ -2,8 +2,10 @@
 // for information about these interfaces
 declare global {
 	namespace App {
+		interface Locals {
+			userfrontPayloads: unknown;
+		}
 		// interface Error {}
-		// interface Locals {}
 		// interface PageData {}
 		// interface Platform {}
 	}

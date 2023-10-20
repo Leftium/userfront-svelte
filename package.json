@@ -38,6 +38,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
 		"esm-env": "^1.0.0",
+		"jose": "^4.15.4",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
 		"publint": "^0.1.9",
