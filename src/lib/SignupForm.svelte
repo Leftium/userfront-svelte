@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Userfront from '@userfront/core';
 	import { BROWSER } from 'esm-env';
+	import { Userfront } from '$lib';
 
 	if (BROWSER) {
 		import('@userfront/toolkit/web-components');
