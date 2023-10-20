@@ -242,3 +242,86 @@ Replace the `src/routes/dashboard/+page.svelte` file with the following:
 Usually, we don't want users to be able to view the dashboard unless they are logged in. This is known as protecting a route.
 
 Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
+
+SvelteKit has both server-side and client-side routing, so we need to redirect in two places.
+
+`parseUserfrontCookies()` is a helper function that parses/decodes Userfront cookies on both the server and client.
+
+### Server-side guard/redirection
+
+Add the file `src/hooks.server.ts` to add protection/redirection via the
+[`handle()` hook](https://kit.svelte.dev/docs/hooks#server-hooks-handle)
+and [redirect()](https://kit.svelte.dev/docs/load#redirects):
+
+```ts
+import { redirect } from '@sveltejs/kit';
+import {
+	PUBLIC_USERFRONT_ACCOUNT_ID,
+	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+} from '$env/static/public';
+import { parseUserfrontCookies } from 'userfront-svelte';
+
+export async function handle({ event, resolve }) {
+	const { pathname } = event.url;
+
+	const cookies = event.request.headers.get('cookie');
+
+	const userfrontPayloads = await parseUserfrontCookies(
+		cookies,
+		PUBLIC_USERFRONT_ACCOUNT_ID,
+		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+	);
+
+	if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(pathname)) {
+		throw redirect(302, '/login');
+	}
+
+	return resolve(event);
+}
+```
+
+### Client-side guard/redirection
+
+Replace the file `src/routes/+layout.svelte` to add protection/redirection via
+[`beforeNavigate()`](https://kit.svelte.dev/docs/modules#$app-navigation-beforenavigate)
+and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
+
+```svelte
+<!-- src/routes/+layout.svelte -->
+
+<script lang="ts">
+	import { beforeNavigate, goto } from '$app/navigation';
+	import { parseUserfrontCookies } from '$lib/index.js';
+
+	import {
+		PUBLIC_USERFRONT_ACCOUNT_ID,
+		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+	} from '$env/static/public';
+
+	import Userfront from '@userfront/core';
+	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
+
+	beforeNavigate(async (navigation) => {
+		const toPathname = navigation.to?.url.pathname as string;
+		const userfrontPayloads = await parseUserfrontCookies(
+			document.cookie,
+			PUBLIC_USERFRONT_ACCOUNT_ID,
+			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+		);
+
+		if (!userfrontPayloads?.access && !['/', '/login', '/reset'].includes(toPathname)) {
+			goto('/login');
+		}
+	});
+</script>
+
+<center>
+	<a href="/">Home</a> |
+	<a href="/login">Login</a> |
+	<a href="/reset">Reset</a> |
+	<a href="/dashboard">Dashboard</a>
+
+	<slot />
+</center>
+
+```
