@@ -22,8 +22,8 @@ export const PUT = async ({ request }) => {
 	const response = await fetch(`https://api.userfront.com/v0/users/${userId}`, {
 		method: 'PUT',
 		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${USERFRONT_API_KEY}`
+			'content-type': 'application/json',
+			authorization: `Bearer ${USERFRONT_API_KEY}`
 		},
 		body: JSON.stringify(payload)
 	});

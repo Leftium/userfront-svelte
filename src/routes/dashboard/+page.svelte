@@ -20,8 +20,8 @@
 		const response = await fetch('/api/update-user', {
 			method: 'PUT',
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: authorizationHeader
+				'content-type': 'application/json',
+				authorization: authorizationHeader
 			},
 			body: JSON.stringify(payload)
 		});
