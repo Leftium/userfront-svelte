@@ -24,12 +24,29 @@
 
 <hr />
 
-<h3>Authorization header for API calls</h3>
-<pre>{authorizationHeader}</pre>
+<label>Name <input /></label>
+<label><input type="checkbox" /> Send Authorization header</label>
+
+<label>Authorization header <input value={authorizationHeader} /></label>
+
+<button>Submit</button>
 
 <style>
 	pre {
 		text-align: left;
-		max-width: 400px;
+		max-width: 440px;
+	}
+
+	label {
+		display: block;
+		max-width: 440px;
+		margin-bottom: 1em;
+		text-align: left;
+		font-weight: bold;
+	}
+
+	input:not([type='checkbox']) {
+		display: block;
+		width: 100%;
 	}
 </style>
