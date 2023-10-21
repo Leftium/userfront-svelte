@@ -19,7 +19,7 @@
 		<button on:click={() => Userfront.logout()}>Log out</button>
 	</header>
 
-	<pre>Userfront.user = {JSON.stringify(user, null, 4)}</pre>
+	<textarea readonly rows="6">Userfront.user = {JSON.stringify(user, null, 4)}</textarea>
 
 	<section>
 		<form action="">
@@ -28,7 +28,7 @@
 				<input type="checkbox" />Send Authorization header:
 			</label>
 			<label>
-				<input value={authorizationHeader} />
+				<input value={authorizationHeader} readonly on:focus={({ target }) => target?.select()} />
 			</label>
 
 			<input type="submit" />
@@ -41,5 +41,11 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
+	}
+
+	textarea {
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow-x: hidden;
 	}
 </style>
