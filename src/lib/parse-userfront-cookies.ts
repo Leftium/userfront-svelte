@@ -1,31 +1,15 @@
 import * as jose from 'jose';
-import type { JWTPayload, KeyLike } from 'jose';
 
-interface ExtendedJWTPayload extends JWTPayload {
-	authorization: Record<string, { roles: string[] }>;
-}
-
-interface TokenPayload extends JWTPayload {
-	userId: number;
-	name: string;
-	email: string;
-	data: unknown;
-}
-
-function getCookie(name: string, cookieString: string | null) {
+export function getCookies(cookieString: string | null) {
 	if (!cookieString) {
 		return null;
 	}
 
-	const cookieObject = cookieString
-		.split('; ')
-		.reduce((acc: Record<string, string>, cookie: string) => {
-			const [key, value] = cookie.split('=');
-			acc[key] = value;
-			return acc;
-		}, {});
-
-	return cookieObject[name] || null;
+	return cookieString.split('; ').reduce((acc: Record<string, string>, cookie: string) => {
+		const [key, value] = cookie.split('=');
+		acc[key] = value;
+		return acc;
+	}, {});
 }
 
 export async function verifyToken(publicKeyBase64: string, token?: string | null) {
@@ -47,8 +31,8 @@ export async function verifyToken(publicKeyBase64: string, token?: string | null
 	return null;
 }
 
-export async function userfrontCookieToTokens(cookies: string | null, tenantId: string) {
-	if (!cookies) {
+export async function userfrontCookieToTokens(cookieString: string | null, tenantId: string) {
+	if (!cookieString) {
 		return null;
 	}
 
@@ -56,9 +40,11 @@ export async function userfrontCookieToTokens(cookies: string | null, tenantId: 
 	const idTokenName = `id.${tenantId}`;
 	const refreshTokenName = `refresh.${tenantId}`;
 
-	const idToken = getCookie(accessTokenName, cookies);
-	const accessToken = getCookie(idTokenName, cookies);
-	const refreshToken = getCookie(refreshTokenName, cookies);
+	const cookies = getCookies(cookieString);
+
+	const accessToken = cookies?.[accessTokenName];
+	const idToken = cookies?.[idTokenName];
+	const refreshToken = cookies?.[refreshTokenName];
 
 	return {
 		accessTokenName,

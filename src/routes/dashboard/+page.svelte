@@ -5,6 +5,10 @@
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
 	const user = Userfront.user;
+
+	export let data;
+
+	const authorizationHeader = `Bearer ${data?.userfrontTokens?.accessToken}`;
 </script>
 
 <h1>Dashboard</h1>
@@ -20,7 +24,8 @@
 
 <hr />
 
-<pre>{JSON.stringify(Userfront.tokens, null, 4)}</pre>
+<h3>Authorization header for API calls</h3>
+<pre>{authorizationHeader}</pre>
 
 <style>
 	pre {
