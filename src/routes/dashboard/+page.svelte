@@ -4,11 +4,23 @@
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	const user = Userfront.user;
-
 	export let data;
 
+	const user = Userfront.user;
 	const authorizationHeader = `Bearer ${data?.userfrontTokens?.accessToken}`;
+
+	const tipText = 'Tip: focus to automatically select and copy.';
+	let helperText = tipText;
+
+	function handleFocus(this: HTMLInputElement) {
+		this.select();
+		navigator.clipboard.writeText(this.value);
+		helperText = 'Copied to clipboard!';
+	}
+
+	function handleBlur() {
+		helperText = tipText;
+	}
 </script>
 
 <h1>Dashboard</h1>
@@ -28,7 +40,8 @@
 				<input type="checkbox" />Send Authorization header:
 			</label>
 			<label>
-				<input value={authorizationHeader} readonly on:focus={({ target }) => target?.select()} />
+				<input value={authorizationHeader} readonly on:focus={handleFocus} on:blur={handleBlur} />
+				<small>{helperText}</small>
 			</label>
 
 			<input type="submit" />
