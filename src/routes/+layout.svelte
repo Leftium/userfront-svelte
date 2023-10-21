@@ -1,4 +1,6 @@
 <script lang="ts">
+	import '@picocss/pico';
+
 	import { beforeNavigate, goto } from '$app/navigation';
 
 	import { userfrontCookieToTokens, verifyToken } from '$lib/index.js';
@@ -30,11 +32,29 @@
 	});
 </script>
 
-<center>
-	<a href="/">Home</a> |
-	<a href="/login">Login</a> |
-	<a href="/reset">Reset</a> |
-	<a href="/dashboard">Dashboard</a>
+<main class="container">
+	<nav>
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/login">Login</a></li>
+			<li><a href="/reset">Reset</a></li>
+			<li><a href="/dashboard">Dashboard</a></li>
+		</ul>
+	</nav>
 
 	<slot />
-</center>
+</main>
+
+<style>
+	main {
+		max-width: 600px;
+	}
+
+	nav {
+		justify-content: center;
+	}
+
+	:global(h1) {
+		text-align: center;
+	}
+</style>

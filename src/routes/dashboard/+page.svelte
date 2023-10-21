@@ -13,40 +13,33 @@
 
 <h1>Dashboard</h1>
 
-<div>
-	<h3>{user.name}</h3>
-	<img src={user.image} alt="profile pic" />
-</div>
+<article>
+	<header>
+		<h4>{user.name || user.email}</h4>
+		<button on:click={() => Userfront.logout()}>Log out</button>
+	</header>
 
-<button on:click={() => Userfront.logout()}>Log out</button>
+	<pre>Userfront.user = {JSON.stringify(user, null, 4)}</pre>
 
-<pre>{JSON.stringify(user, null, 4)}</pre>
+	<section>
+		<form action="">
+			<label>Name<input /></label>
+			<label>
+				<input type="checkbox" />Send Authorization header:
+			</label>
+			<label>
+				<input value={authorizationHeader} />
+			</label>
 
-<hr />
-
-<label>Name <input /></label>
-<label><input type="checkbox" /> Send Authorization header</label>
-
-<label>Authorization header <input value={authorizationHeader} /></label>
-
-<button>Submit</button>
+			<input type="submit" />
+		</form>
+	</section>
+</article>
 
 <style>
-	pre {
-		text-align: left;
-		max-width: 440px;
-	}
-
-	label {
-		display: block;
-		max-width: 440px;
-		margin-bottom: 1em;
-		text-align: left;
-		font-weight: bold;
-	}
-
-	input:not([type='checkbox']) {
-		display: block;
-		width: 100%;
+	article header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
 	}
 </style>
