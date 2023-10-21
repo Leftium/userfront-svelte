@@ -4,22 +4,34 @@
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	export let data;
+	let user = Userfront.user;
 
-	const user = Userfront.user;
-	const authorizationHeader = `Bearer ${data?.userfrontTokens?.accessToken}`;
+	// Bindings:
+	let name = 'JKM';
+	let phoneNumber = '+14445556666';
+	let authorizationHeader = `Bearer ${Userfront.tokens.accessToken}`;
 
-	const tipText = 'Tip: focus to automatically select and copy.';
-	let helperText = tipText;
+	async function handleSubmit() {
+		const payload = {
+			name,
+			phoneNumber
+		};
 
-	function handleFocus(this: HTMLInputElement) {
-		this.select();
-		navigator.clipboard.writeText(this.value);
-		helperText = 'Copied to clipboard!';
-	}
+		const response = await fetch('/api/update-user', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: authorizationHeader
+			},
+			body: JSON.stringify(payload)
+		});
 
-	function handleBlur() {
-		helperText = tipText;
+		await Userfront.tokens.refresh();
+		user = Userfront.user;
+
+		console.log(response);
+
+		console.log(await response.text());
 	}
 </script>
 
@@ -35,16 +47,14 @@
 
 	<section>
 		<form action="">
-			<label>Name<input /></label>
+			<label>Name<input bind:value={name} /></label>
+			<label>Phone Number<input bind:value={phoneNumber} /></label>
 			<label>
-				<input type="checkbox" />Send Authorization header:
-			</label>
-			<label>
-				<input value={authorizationHeader} readonly on:focus={handleFocus} on:blur={handleBlur} />
-				<small>{helperText}</small>
+				Authorization Header
+				<input bind:value={authorizationHeader} />
 			</label>
 
-			<input type="submit" />
+			<input type="submit" on:click={handleSubmit} />
 		</form>
 	</section>
 </article>
