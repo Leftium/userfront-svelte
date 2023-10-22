@@ -1,8 +1,23 @@
 # Userfront Svelte auth example
 
+Svelte port of Userfront examples based on:
+- https://userfront.com/examples/react
+- https://userfront.com/examples/vue
+
+### Live demo
+
+https://userfront-svelte-leftium.vercel.app
+
+### Source code
+
+https://github.com/Leftium/userfront-svelte
+
+
+## Step-by-step tutorial:
+
 In this example, we will add authentication and access control to a SvelteKit application.
 
-The `userfront-svelte` package _does_ work with plain Svelte, but we will use SvelteKit for setup and routing.
+The `userfront-svelte` package _does work with plain Svelte_, but we will use SvelteKit for setup and routing.
 
 
 
@@ -503,6 +518,7 @@ if (authorization.roles.includes("admin")) {
 
 - [+server endpoint that reads and verifies the JWT access token](https://github.com/Leftium/userfront-svelte/blob/main/src/routes/api/update-user/%2Bserver.ts)
 - [+page that calls the endpoint](https://github.com/Leftium/userfront-svelte/blob/dc22a9425c96c6e6d6b14464c934346f03cd7c1e/src/routes/dashboard/%2Bpage.svelte#L20-L27)
+- [Live Demo](https://userfront-svelte-leftium.vercel.app)
 
 
 
