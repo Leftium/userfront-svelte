@@ -7,8 +7,8 @@
 	let user = Userfront.user;
 
 	// Bindings:
-	let name = 'JKM';
-	let phoneNumber = '+14445556666';
+	let name = user.name || '';
+	let phoneNumber = user.phoneNumber || '+13335557777';
 	let authorizationHeader = `Bearer ${Userfront.tokens.accessToken}`;
 
 	async function handleSubmit() {
@@ -30,8 +30,7 @@
 		user = Userfront.user;
 
 		console.log(response);
-
-		console.log(await response.text());
+		console.log(await response.json());
 	}
 </script>
 
