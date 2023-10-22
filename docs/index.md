@@ -37,6 +37,14 @@ Select the options as you go. In this example, we set up SvelteKit with the foll
 
 Now our application is available at [http://localhost:5173/](http://localhost:5173/)
 
+### Making it prettier _(optional)_
+
+This example uses Pico CSS for nice-looking default semantic styles.
+
+```sh
+npm install @picocss/pico@next --save
+```
+
 
 
 
@@ -55,14 +63,36 @@ Add `src/routes/+layout.svelte` with the following to add a simple navigation me
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
-<center>
-	<a href="/">Home</a> |
-	<a href="/login">Login</a> |
-	<a href="/reset">Reset</a> |
-	<a href="/dashboard">Dashboard</a>
+<script lang="ts">
+	import '@picocss/pico';
+</script>
+
+<main class="container">
+	<nav>
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/login">Login</a></li>
+			<li><a href="/reset">Reset</a></li>
+			<li><a href="/dashboard">Dashboard</a></li>
+		</ul>
+	</nav>
 
 	<slot />
-</center>
+</main>
+
+<style>
+	main {
+		max-width: 600px;
+	}
+
+	nav {
+		justify-content: center;
+	}
+
+	:global(h1) {
+		text-align: center;
+	}
+</style>
 ```
 
 Then add placeholders for each route:
@@ -101,7 +131,7 @@ With our routes in place, we are ready to add authentication.
 Add the file `env.locals` to the root of your project folder and fill in your account details.
 They will be used in the next steps.
 
-Instead of hard-coding them, SvelteKit provides access to environment variables:
+SvelteKit provides access to environment variables so we can avoid hard-coding them:
 
 - [$env/static/private](https://kit.svelte.dev/docs/modules#$env-static-private)
 - [$env/static/public](https://kit.svelte.dev/docs/modules#$env-static-public)
@@ -119,14 +149,15 @@ PUBLIC_USERFRONT_PUBLIC_KEY_BASE64=
 USERFRONT_API_KEY=
 ```
 
+
 ## Signup, login, and password reset
 
 We'll start by adding a signup form to the home page.
 
-Install the Userfront Toolkit with:
+Install the required packages with:
 
 ```sh
-npm install -D @userfront/toolkit --save
+npm install -D @userfront/core @userfront/toolkit userfront-svelte --save
 ```
 
 We will use Userfront tools on multiple pages, so we can initialize it once in the `+layout.svelte` file.
@@ -135,19 +166,39 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 <!-- src/routes/+layout.svelte --!>
 
 <script lang="ts">
+	import '@picocss/pico';
+
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 	import Userfront from '@userfront/core';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 </script>
 
-<center>
-	<a href="/">Home</a> |
-	<a href="/login">Login</a> |
-	<a href="/reset">Reset</a> |
-	<a href="/dashboard">Dashboard</a>
+<main class="container">
+	<nav>
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/login">Login</a></li>
+			<li><a href="/reset">Reset</a></li>
+			<li><a href="/dashboard">Dashboard</a></li>
+		</ul>
+	</nav>
 
 	<slot />
-</center>
+</main>
+
+<style>
+	main {
+		max-width: 600px;
+	}
+
+	nav {
+		justify-content: center;
+	}
+
+	:global(h1) {
+		text-align: center;
+	}
+</style>
 ```
 
 Now we can add the signup form to the home page by replacing the contents of `src/routes/+page.svelte` with the template from the instructions:
@@ -235,19 +286,26 @@ Replace the `src/routes/dashboard/+page.svelte` file with the following:
 
 <h1>Dashboard</h1>
 
-<div>
-	<h3>{user.name}</h3>
-	<img src={user.image} alt="profile pic" />
-</div>
+<article>
+	<header>
+		<h4>{user.name || user.email}</h4>
+		<button on:click={() => Userfront.logout()}>Log out</button>
+	</header>
 
-<button on:click={() => Userfront.logout()}>Log out</button>
-
-<pre>{JSON.stringify(user, null, 4)}</pre>
+	<textarea readonly rows="6">Userfront.user = {JSON.stringify(user, null, 4)}</textarea>
+</article>
 
 <style>
-	pre {
-		text-align: left;
-		max-width: 400px;
+	article header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+
+	textarea {
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow-x: hidden;
 	}
 </style>
 ```
@@ -278,25 +336,28 @@ import {
 	PUBLIC_USERFRONT_ACCOUNT_ID,
 	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 } from '$env/static/public';
-import { parseUserfrontCookies } from 'userfront-svelte';
+
+import { userfrontCookieToTokens, verifyToken } from 'userfront-svelte';
 
 export async function handle({ event, resolve }) {
 	const { pathname } = event.url;
 
-	const cookies = event.request.headers.get('cookie');
+	const cookie = event.request.headers.get('cookie');
 
-	const userfrontTokens = await parseUserfrontCookies(
-		cookies,
-		PUBLIC_USERFRONT_ACCOUNT_ID,
-		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+	const userfrontTokens = await userfrontCookieToTokens(cookie, PUBLIC_USERFRONT_ACCOUNT_ID);
+
+	const accessPayload = await verifyToken(
+		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
+		userfrontTokens?.accessToken
 	);
 
-	if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(pathname)) {
+	if (!accessPayload && !['/', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}
 
 	return resolve(event);
 }
+
 ```
 
 
@@ -307,11 +368,12 @@ Replace the file `src/routes/+layout.svelte` to add protection/redirection via
 and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 
 ```svelte
-<!-- src/routes/+layout.svelte -->
-
 <script lang="ts">
+	import '@picocss/pico';
+
 	import { beforeNavigate, goto } from '$app/navigation';
-	import { parseUserfrontCookies } from '$lib/index.js';
+
+	import { userfrontCookieToTokens, verifyToken } from '$lib/index.js';
 
 	import {
 		PUBLIC_USERFRONT_ACCOUNT_ID,
@@ -323,26 +385,50 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 
 	beforeNavigate(async (navigation) => {
 		const toPathname = navigation.to?.url.pathname as string;
-		const userfrontTokens = await parseUserfrontCookies(
+
+		const userfrontTokens = await userfrontCookieToTokens(
 			document.cookie,
-			PUBLIC_USERFRONT_ACCOUNT_ID,
-			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
+			PUBLIC_USERFRONT_ACCOUNT_ID
 		);
 
-		if (!userfrontTokens?.accessToken && !['/', '/login', '/reset'].includes(toPathname)) {
+		const accessPayload = await verifyToken(
+			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
+			userfrontTokens?.accessToken
+		);
+
+		if (!accessPayload && !['/', '/login', '/reset'].includes(toPathname)) {
 			goto('/login');
 		}
 	});
 </script>
 
-<center>
-	<a href="/">Home</a> |
-	<a href="/login">Login</a> |
-	<a href="/reset">Reset</a> |
-	<a href="/dashboard">Dashboard</a>
+<main class="container">
+	<nav>
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/login">Login</a></li>
+			<li><a href="/reset">Reset</a></li>
+			<li><a href="/dashboard">Dashboard</a></li>
+		</ul>
+	</nav>
 
 	<slot />
-</center>
+</main>
+
+<style>
+	main {
+		max-width: 600px;
+	}
+
+	nav {
+		justify-content: center;
+	}
+
+	:global(h1) {
+		text-align: center;
+	}
+</style>
+
 ```
 
 
