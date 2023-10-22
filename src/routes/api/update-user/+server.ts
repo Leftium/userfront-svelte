@@ -5,16 +5,18 @@ import { error, json } from '@sveltejs/kit';
 
 export const PUT = async ({ request }) => {
 	const payload = await request.json();
-	const authHeader = request.headers.get('authorization');
 
+	// Read the JWT access token from the request header:
+	const authHeader = request.headers.get('authorization');
 	const token = authHeader && authHeader.split(' ')[1];
 	if (!token) {
 		throw error(401, 'Missing authorization token.');
 	}
 
+	// Verify the token using the Userfront public key:
 	const auth = await verifyToken(PUBLIC_USERFRONT_PUBLIC_KEY_BASE64, token);
 	if (!auth) {
-		throw error(401, 'Invalid token.');
+		throw error(403, 'Error validating authorization token.');
 	}
 
 	const userId = auth.userId;
