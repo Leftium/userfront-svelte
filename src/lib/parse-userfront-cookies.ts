@@ -2,7 +2,7 @@ import * as jose from 'jose';
 
 export function getCookies(cookieString: string | null) {
 	if (!cookieString) {
-		return null;
+		return {};
 	}
 
 	return cookieString.split('; ').reduce((acc: Record<string, string>, cookie: string) => {
@@ -42,9 +42,9 @@ export async function userfrontCookieToTokens(cookieString: string | null, tenan
 
 	const cookies = getCookies(cookieString);
 
-	const accessToken = cookies?.[accessTokenName];
-	const idToken = cookies?.[idTokenName];
-	const refreshToken = cookies?.[refreshTokenName];
+	const accessToken = cookies[accessTokenName];
+	const idToken = cookies[idTokenName];
+	const refreshToken = cookies[refreshTokenName];
 
 	return {
 		accessTokenName,
