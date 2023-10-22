@@ -1,16 +1,16 @@
 # Userfront Svelte auth example
 
 Svelte port of Userfront examples based on:
-- https://userfront.com/examples/react
-- https://userfront.com/examples/vue
+- [https://userfront.com/examples/react](https://userfront.com/examples/react)
+- [https://userfront.com/examples/vue](https://userfront.com/examples/vue)
 
 ### Live demo
 
-https://userfront-svelte-leftium.vercel.app
+[https://userfront-svelte-leftium.vercel.app](https://userfront-svelte-leftium.vercel.app)
 
 ### Source code
 
-https://github.com/Leftium/userfront-svelte
+[https://github.com/Leftium/userfront-svelte](https://github.com/Leftium/userfront-svelte)
 
 
 ## Step-by-step tutorial:
