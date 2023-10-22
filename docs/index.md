@@ -343,38 +343,6 @@ To handle a request like this, the (SvelteKit) backend should read the JWT acces
 from the `Authorization` header and verify that it is valid using the JWT public key found
 found in your Userfront dashboard.
 
-Here is an example of a SvelteKit +server endpoint that reads and verifies the JWT access token.
-It uses a utility function `verifyToken()` from the `userfront-svelte` package:
-
-```ts
-// Example +server.ts (SvelteKit)
-
-import { USERFRONT_API_KEY } from '$env/static/private';
-import { PUBLIC_USERFRONT_PUBLIC_KEY_BASE64 } from '$env/static/public';
-import { error, json } from '@sveltejs/kit';
-
-import { verifyToken } from 'userfront-svelte';
-
-export const GET = async ({ request }) => {
-	// Read the JWT access token from the request header
-	const payload = await request.json();
-	const authHeader = request.headers.get('authorization');
-
-	const token = authHeader && authHeader.split(' ')[1];
-	if (!token) {
-		throw error(401, 'Missing authorization token.');
-	}
-
-	// Verify the token using the Userfront public key
-	const auth = await verifyToken(PUBLIC_USERFRONT_PUBLIC_KEY_BASE64, token);
-	if (!auth) {
-		throw error(403, 'Error validating authorization token.');
-	}
-
-	return json(auth)
-};
-```
-
 Using this approach, any invalid or missing tokens are rejected by your server.
 You can also reference the contents of the token later using the `auth` object:
 
@@ -414,7 +382,12 @@ if (authorization.roles.includes("admin")) {
 } else {
 // Deny access
 }
-
 ```
+
+### Full SvelteKit API authentication example
+- [+server endpoint that reads and verifies the JWT access token.](https://github.com/Leftium/userfront-svelte/blob/main/src/routes/api/update-user/%2Bserver.ts)
+- [Example SvelteKit +page that calls endpoint.](https://github.com/Leftium/userfront-svelte/blob/dc22a9425c96c6e6d6b14464c934346f03cd7c1e/src/routes/dashboard/%2Bpage.svelte#L20-L27)
+
+
 
 
