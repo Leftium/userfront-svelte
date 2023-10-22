@@ -318,3 +318,103 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 	<slot />
 </center>
 ```
+
+### Svelte authentication with an API
+
+`Userfront.tokens.accessToken` is a JWT access token that you can
+use on your backend to protect your API endpoints.
+
+The SvelteKit client can send the JWT access token as a
+`Bearer` token inside the `Authorization` header. For example:
+
+```js
+// Example of calling an endpoint with a JWT
+
+const response = await fetch('/your-endpoint', {
+	method: 'GET',
+	headers: {
+		'content-type': 'application/json',
+		authorization: `Bearer ${Userfront.tokens.accessToken}`
+	},
+});
+```
+
+To handle a request like this, the (SvelteKit) backend should read the JWT access token
+from the `Authorization` header and verify that it is valid using the JWT public key found
+found in your Userfront dashboard.
+
+Here is an example of a SvelteKit +server endpoint that reads and verifies the JWT access token.
+It uses a utility function `verifyToken()` from the `userfront-svelte` package:
+
+```ts
+// Example +server.ts (SvelteKit)
+
+import { USERFRONT_API_KEY } from '$env/static/private';
+import { PUBLIC_USERFRONT_PUBLIC_KEY_BASE64 } from '$env/static/public';
+import { error, json } from '@sveltejs/kit';
+
+import { verifyToken } from 'userfront-svelte';
+
+export const GET = async ({ request }) => {
+	// Read the JWT access token from the request header
+	const payload = await request.json();
+	const authHeader = request.headers.get('authorization');
+
+	const token = authHeader && authHeader.split(' ')[1];
+	if (!token) {
+		throw error(401, 'Missing authorization token.');
+	}
+
+	// Verify the token using the Userfront public key
+	const auth = await verifyToken(PUBLIC_USERFRONT_PUBLIC_KEY_BASE64, token);
+	if (!auth) {
+		throw error(403, 'Error validating authorization token.');
+	}
+
+	return json(auth)
+};
+```
+
+Using this approach, any invalid or missing tokens are rejected by your server.
+You can also reference the contents of the token later using the `auth` object:
+
+```js
+console.log(auth);
+
+// =>
+{
+  mode: 'test',
+  tenantId: 'demo1234',
+  userId: 1,
+  userUuid: 'ab53dbdc-bb1a-4d4d-9edf-683a6ca3f609',
+  isConfirmed: false,
+  authorization: {
+    demo1234: {
+      roles: ["admin"]
+    },
+  },
+  sessionId: '35d0bf4a-912c-4429-9886-cd65a4844a4f',
+  iat: 1614114057,
+  exp: 1616706057
+}
+```
+With this information, you can perform further checks as desired,
+or use the `userId` or `userUuid` to look up information related to the user.
+
+For example, if you wanted to limit a route to admin users, you could check
+against the `authorization` object from the verified access token:
+
+```js
+// Javascript example
+
+const authorization = auth.authorization["demo1234"] || {};
+
+if (authorization.roles.includes("admin")) {
+// Allow access
+} else {
+// Deny access
+}
+
+```
+
+
