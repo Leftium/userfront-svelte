@@ -4,6 +4,9 @@ In this example, we will add authentication and access control to a SvelteKit ap
 
 The `userfront-svelte` package _does_ work with plain Svelte, but we will use SvelteKit for setup and routing.
 
+
+
+
 ## Svelte authentication
 
 At a high level, Svelte's responsibility in authentication is to:
@@ -12,6 +15,9 @@ At a high level, Svelte's responsibility in authentication is to:
 2. Send the JWT access token to your server with each subsequent request.
 
 ![image](https://github.com/Leftium/userfront-svelte/assets/381217/a2ad08a4-aae2-4f52-ba01-4ae733049be8)
+
+
+
 
 ## Set up SvelteKit
 
@@ -30,6 +36,9 @@ Select the options as you go. In this example, we set up SvelteKit with the foll
 - Prettier
 
 Now our application is available at [http://localhost:5173/](http://localhost:5173/)
+
+
+
 
 ## Routing
 
@@ -83,6 +92,9 @@ Then add placeholders for each route:
 ```
 
 With our routes in place, we are ready to add authentication.
+
+
+
 
 ## Userfront environment variables
 
@@ -154,11 +166,17 @@ Now we can add the signup form to the home page by replacing the contents of `sr
 
 Now the home page has your signup form. Try signing up a user.
 
+
+
+
 ## Test mode
 
 The form is in "Test mode" by default, which will create user records in a test environment you can view separately in your Userfront dashboard.
 
 ![image](https://github.com/Leftium/userfront-svelte/assets/381217/4928d31f-c609-4b27-af7d-5f3ba6020a56)
+
+
+
 
 ## Login and password reset
 
@@ -191,6 +209,9 @@ Continue by adding your login and password reset forms in the same way that you 
 At this point, your signup, login, and password reset should all be functional.
 
 Your users can sign up, log in, and reset their password.
+
+
+
 
 ## Dashboard page
 
@@ -231,6 +252,9 @@ Replace the `src/routes/dashboard/+page.svelte` file with the following:
 </style>
 ```
 
+
+
+
 ## Protected route in SvelteKit
 
 Usually, we don't want users to be able to view the dashboard unless they are logged in. This is known as protecting a route.
@@ -240,6 +264,7 @@ Whenever a user is not logged in but tries to visit `/dashboard`, we can redirec
 SvelteKit has both server-side and client-side routing, so we need to redirect in both.
 
 `parseUserfrontCookies()` is a helper function that parses/decodes Userfront cookies on both the server and client.
+
 
 ### Server-side guard/redirection
 
@@ -273,6 +298,7 @@ export async function handle({ event, resolve }) {
 	return resolve(event);
 }
 ```
+
 
 ### Client-side guard/redirection
 
@@ -318,6 +344,7 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 	<slot />
 </center>
 ```
+
 
 ### Svelte authentication with an API
 
@@ -384,10 +411,22 @@ if (authorization.roles.includes("admin")) {
 }
 ```
 
+
+
 ### Full SvelteKit API authentication example
+
 - [+server endpoint that reads and verifies the JWT access token](https://github.com/Leftium/userfront-svelte/blob/main/src/routes/api/update-user/%2Bserver.ts)
 - [+page that calls the endpoint](https://github.com/Leftium/userfront-svelte/blob/dc22a9425c96c6e6d6b14464c934346f03cd7c1e/src/routes/dashboard/%2Bpage.svelte#L20-L27)
 
+
+
+## Svelte SSO (Single Sign On)
+
+From here, you can add social identity providers like Google, Facebook, and LinkedIn to your Svelte application, or business identity providers like Azure AD, Office365, and more.
+
+To do this, create an application with the identity provider (e.g. Google), and then add those SSO credentials to the Userfront dashboard. The result is a modified sign on experience.
+
+No additional code is needed to implement Single Sign On using this approach: you can add and remove providers without updating your forms or the way you handle JWT access tokens.
 
 
 
