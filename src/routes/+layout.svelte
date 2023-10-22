@@ -43,6 +43,13 @@
 	</nav>
 
 	<slot />
+
+	<center>
+		<footer>
+			<a href="http://www.leftium.com/userfront-svelte/">Documentation</a> |
+			<a href="https://github.com/Leftium/userfront-svelte">Source code</a>
+		</footer>
+	</center>
 </main>
 
 <style>

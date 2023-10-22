@@ -53,7 +53,7 @@
 				<input bind:value={authorizationHeader} />
 			</label>
 
-			<input type="submit" on:click={handleSubmit} />
+			<input type="submit" on:click={handleSubmit} value="Fetch /api/update-user endpoint" />
 		</form>
 	</section>
 </article>
