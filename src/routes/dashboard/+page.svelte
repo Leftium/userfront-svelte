@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 
-	import Userfront from '@userfront/core';
+	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
 	let user = Userfront.user;

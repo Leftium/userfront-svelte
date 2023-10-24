@@ -1,18 +1,14 @@
 // Reexport your entry components here
-import Userfront from '@userfront/core';
+// Import the Userfront singleton from the @userfront/toolkit library
+// rather than @userfront/core - this ensures CoreJS and the toolkit
+// can talk to each other.
+import Userfront from '@userfront/toolkit';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { userfrontCookieToTokens, verifyToken } from './parse-userfront-cookies';
-
-import SignupForm from './SignupForm.svelte'
-import LoginForm from './LoginForm.svelte'
-import PasswordResetForm from './PasswordResetForm.svelte'
 
 export {
     Userfront,
     userfrontCookieToTokens,
     verifyToken,
-    SignupForm,
-    LoginForm,
-    PasswordResetForm,
 }

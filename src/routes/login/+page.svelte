@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { LoginForm } from '$lib/index.js';
 </script>
 
 <h1>Login</h1>
 
-<LoginForm />
+<login-form redirect-on-load-if-logged-in="true"></login-form>
