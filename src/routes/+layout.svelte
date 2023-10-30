@@ -40,7 +40,6 @@
 			<li><a href="/login">Login</a></li>
 			<li><a href="/reset">Reset</a></li>
 			<li><a href="/dashboard">Dashboard</a></li>
-			<li style="height: 100px;"><logout-button></logout-button></li>
 		</ul>
 	</nav>
 
