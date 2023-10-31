@@ -172,7 +172,7 @@ We'll start by adding a signup form to the home page.
 Install the required packages with:
 
 ```sh
-npm install -D @userfront/core @userfront/toolkit userfront-svelte --save
+npm install -D @userfront/toolkit userfront-svelte --save
 ```
 
 We will use Userfront tools on multiple pages, so we can initialize it once in the `+layout.svelte` file.
@@ -385,7 +385,7 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	} from '$env/static/public';
 
-	import Userfront from '@userfront/core';
+	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
 	beforeNavigate(async (navigation) => {
