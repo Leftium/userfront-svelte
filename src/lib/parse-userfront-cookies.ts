@@ -1,6 +1,6 @@
 import * as jose from 'jose';
 
-export function getCookies(cookieString: string | null) {
+function getCookies(cookieString: string | null) {
 	if (!cookieString) {
 		return {};
 	}
@@ -11,6 +11,11 @@ export function getCookies(cookieString: string | null) {
 		return acc;
 	}, {});
 }
+
+// Verify JWT token.
+// Inputs: JWT public key and JWT token.
+// Output: Decoded JWT token payload on successful verification; otherwise null.
+// Side-effects: Logs errors while verifying token.
 
 export async function verifyToken(publicKeyBase64: string, token?: string | null) {
 	if (!token) {
@@ -30,6 +35,10 @@ export async function verifyToken(publicKeyBase64: string, token?: string | null
 	}
 	return null;
 }
+
+// Parse userfront cookie into tokens.
+// Inputs: Cookie string and tenantId.
+// Outputs: Object with token names and tokens (same format as `Userfront.tokens`)
 
 export async function userfrontCookieToTokens(cookieString: string | null, tenantId: string) {
 	if (!cookieString) {
