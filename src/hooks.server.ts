@@ -18,7 +18,7 @@ export async function handle({ event, resolve }) {
 		userfrontTokens?.accessToken
 	);
 
-	if (!accessPayload && !['/', '/login', '/reset'].includes(pathname)) {
+	if (!accessPayload && !['/', '/signup', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}
 

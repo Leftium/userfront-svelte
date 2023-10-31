@@ -10,7 +10,7 @@
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	} from '$env/static/public';
 
-	import Userfront from '@userfront/core';
+	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
 	beforeNavigate(async (navigation) => {
@@ -26,7 +26,7 @@
 			userfrontTokens?.accessToken
 		);
 
-		if (!accessPayload && !['/', '/login', '/reset'].includes(toPathname)) {
+		if (!accessPayload && !['/', '/login', '/signup', '/reset'].includes(toPathname)) {
 			goto('/login');
 		}
 	});
@@ -36,6 +36,7 @@
 	<nav>
 		<ul>
 			<li><a href="/">Home</a></li>
+			<li><a href="/signup">Signup</a></li>
 			<li><a href="/login">Login</a></li>
 			<li><a href="/reset">Reset</a></li>
 			<li><a href="/dashboard">Dashboard</a></li>
