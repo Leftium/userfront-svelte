@@ -184,7 +184,7 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 	import '@picocss/pico';
 
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
-	import Userfront from '@userfront/core';
+	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 </script>
 
@@ -216,18 +216,14 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 </style>
 ```
 
-Now we can add the signup form to the home page by replacing the contents of `src/routes/+page.svelte` with the template from the instructions:
+Now we can add the signup form to the home page just by adding the appropriate web component in `src/routes/+page.svelte`:
 
 ```svelte
 <!-- src/routes/+page.svelte -->
 
-<script lang="ts">
-	import { SignupForm } from 'userfront-svelte';
-</script>
-
 <h1>Home</h1>
 
-<SignupForm />
+<signup-form />
 ```
 
 Now the home page has your signup form. Try signing up a user.
@@ -251,25 +247,17 @@ Continue by adding your login and password reset forms in the same way that you 
 ```svelte
 <!-- src/routes/login/+page.svelte -->
 
-<script lang="ts">
-	import { LoginForm } from 'userfront-svelte';
-</script>
-
 <h1>Login</h1>
 
-<LoginForm />
+<login-form redirect-on-load-if-logged-in="true" />
 ```
 
 ```svelte
 <!-- src/routes/reset/+page.svelte -->
 
-<script lang="ts">
-	import { PasswordResetForm } from 'userfront-svelte';
-</script>
-
 <h1>Reset</h1>
 
-<PasswordResetForm />
+<password-reset-form />
 ```
 
 At this point, your signup, login, and password reset should all be functional.
@@ -290,13 +278,15 @@ We can log the user out by calling `Userfront.logout()`.
 Replace the `src/routes/dashboard/+page.svelte` file with the following:
 
 ```svelte
+<!-- src/routes/dashboard/+page.svelte -->
+
 <script lang="ts">
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 
-	import Userfront from '@userfront/core';
+	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	const user = Userfront.user;
+	const { user } = Userfront;
 </script>
 
 <h1>Dashboard</h1>
@@ -334,9 +324,9 @@ Usually, we don't want users to be able to view the dashboard unless they are lo
 
 Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
 
-SvelteKit has both server-side and client-side routing, so we need to redirect in both.
+SvelteKit has both server-side and client-side routing, so we need to redirect in both cases.
 
-`parseUserfrontCookies()` is a helper function that parses/decodes Userfront cookies on both the server and client.
+`userfrontCookieToTokens()` and `verifyToken()` are helper function that parse/decode Userfront cookies on both the server and client.
 
 
 ### Server-side guard/redirection
@@ -366,7 +356,7 @@ export async function handle({ event, resolve }) {
 		userfrontTokens?.accessToken
 	);
 
-	if (!accessPayload && !['/', '/login', '/reset'].includes(pathname)) {
+	if (!accessPayload && !['/', '/signup', '/login', '/reset'].includes(pathname)) {
 		throw redirect(302, '/login');
 	}
 
