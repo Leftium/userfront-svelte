@@ -401,7 +401,7 @@ and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
 			userfrontTokens?.accessToken
 		);
 
-		if (!accessPayload && !['/', '/login', '/reset'].includes(toPathname)) {
+		if (!accessPayload && !['/', '/signup', '/login', '/reset'].includes(pathname)) {
 			goto('/login');
 		}
 	});
