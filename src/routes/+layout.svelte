@@ -10,6 +10,7 @@
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
 	} from '$env/static/public';
 
+	// Also imports Userfront custom web components like <signup-form>.
 	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 

@@ -4,7 +4,7 @@
 	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	let user = Userfront.user;
+	let { user } = Userfront;
 
 	// Bindings:
 	let name = user.name || '';
