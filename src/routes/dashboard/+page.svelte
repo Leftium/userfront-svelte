@@ -54,6 +54,7 @@
 			</label>
 
 			<input type="submit" on:click={handleSubmit} value="Fetch /api/update-user endpoint" />
+			<small>(API response logged to dev console.)</small>
 		</form>
 	</section>
 </article>
