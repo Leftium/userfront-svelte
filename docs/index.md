@@ -324,19 +324,15 @@ Usually, we don't want users to be able to view the dashboard unless they are lo
 
 Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
 
-SvelteKit has both server-side and client-side routing, so we need to redirect in both cases.
-
-`userfrontCookieToTokens()` and `verifyToken()` are helper function that parse/decode Userfront cookies on both the server and client.
+`userfrontCookieToTokens()` and `verifyToken()` are helper functions that parse/decode Userfront cookies on both the server and client.
 
 
-### Server-side guard/redirection
 
-Add the file `src/hooks.server.ts` to add protection/redirection via the
-[`handle()` hook](https://kit.svelte.dev/docs/hooks#server-hooks-handle)
-and [redirect()](https://kit.svelte.dev/docs/load#redirects):
+Add the file `src/hooks.server.ts` to pass auth info from the UserFront JWT to SvelteKit's request event:
 
 ```ts
-import { redirect } from '@sveltejs/kit';
+// src/hooks.server.ts
+
 import {
 	PUBLIC_USERFRONT_ACCOUNT_ID,
 	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
@@ -345,94 +341,31 @@ import {
 import { userfrontCookieToTokens, verifyToken } from 'userfront-svelte';
 
 export async function handle({ event, resolve }) {
-	const { pathname } = event.url;
-
 	const cookie = event.request.headers.get('cookie');
-
 	const userfrontTokens = await userfrontCookieToTokens(cookie, PUBLIC_USERFRONT_ACCOUNT_ID);
 
-	const accessPayload = await verifyToken(
+	event.locals.auth = await verifyToken(
 		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
 		userfrontTokens?.accessToken
 	);
 
-	if (!accessPayload && !['/', '/signup', '/login', '/reset'].includes(pathname)) {
-		throw redirect(302, '/login');
-	}
-
 	return resolve(event);
 }
-
 ```
 
+Then add the file `src/routes/dashboard/+page.server.ts` to protect the `/dashboard` route.
+Each protected route needs a +page.server file like this:
 
-### Client-side guard/redirection
+```ts
+// src/routes/dashboard/+page.server.ts
 
-Replace the file `src/routes/+layout.svelte` to add protection/redirection via
-[`beforeNavigate()`](https://kit.svelte.dev/docs/modules#$app-navigation-beforenavigate)
-and [`goto()`](https://kit.svelte.dev/docs/modules#$app-navigation-goto):
+import { redirect } from '@sveltejs/kit';
 
-```svelte
-<script lang="ts">
-	import '@picocss/pico';
+// Protected route. Redirect if not logged in.
+export const load = async ({ locals }) => {
+	if (!locals.auth) throw redirect(302, `/login`);
+};
 
-	import { beforeNavigate, goto } from '$app/navigation';
-
-	import { userfrontCookieToTokens, verifyToken } from '$lib/index.js';
-
-	import {
-		PUBLIC_USERFRONT_ACCOUNT_ID,
-		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
-	} from '$env/static/public';
-
-	import Userfront from '@userfront/toolkit/web-components';
-	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
-
-	beforeNavigate(async (navigation) => {
-		const toPathname = navigation.to?.url.pathname as string;
-
-		const userfrontTokens = await userfrontCookieToTokens(
-			document.cookie,
-			PUBLIC_USERFRONT_ACCOUNT_ID
-		);
-
-		const accessPayload = await verifyToken(
-			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
-			userfrontTokens?.accessToken
-		);
-
-		if (!accessPayload && !['/', '/signup', '/login', '/reset'].includes(pathname)) {
-			goto('/login');
-		}
-	});
-</script>
-
-<main class="container">
-	<nav>
-		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/login">Login</a></li>
-			<li><a href="/reset">Reset</a></li>
-			<li><a href="/dashboard">Dashboard</a></li>
-		</ul>
-	</nav>
-
-	<slot />
-</main>
-
-<style>
-	main {
-		max-width: 600px;
-	}
-
-	nav {
-		justify-content: center;
-	}
-
-	:global(h1) {
-		text-align: center;
-	}
-</style>
 
 ```
 
