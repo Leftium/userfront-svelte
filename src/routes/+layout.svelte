@@ -1,36 +1,11 @@
 <script lang="ts">
 	import '@picocss/pico';
 
-	import { beforeNavigate, goto } from '$app/navigation';
-
-	import { userfrontCookieToTokens, verifyToken } from '$lib/index.js';
-
-	import {
-		PUBLIC_USERFRONT_ACCOUNT_ID,
-		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
-	} from '$env/static/public';
+	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 
 	// Also imports Userfront custom web components like <signup-form>.
 	import Userfront from '@userfront/toolkit/web-components';
 	Userfront.init(PUBLIC_USERFRONT_ACCOUNT_ID);
-
-	beforeNavigate(async (navigation) => {
-		const toPathname = navigation.to?.url.pathname as string;
-
-		const userfrontTokens = await userfrontCookieToTokens(
-			document.cookie,
-			PUBLIC_USERFRONT_ACCOUNT_ID
-		);
-
-		const accessPayload = await verifyToken(
-			PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
-			userfrontTokens?.accessToken
-		);
-
-		if (!accessPayload && !['/', '/login', '/signup', '/reset'].includes(toPathname)) {
-			goto('/login');
-		}
-	});
 </script>
 
 <main class="container">
