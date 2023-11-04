@@ -1,4 +1,4 @@
-# UserFront + SvelteKit
+# UserFront + Svelte(Kit)
 
 ### Step-By-Step Tutorial: How to Use UserFront + Svelte(Kit):
 
