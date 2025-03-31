@@ -37,15 +37,17 @@ At a high level, Svelte's responsibility in authentication is to:
 ## Set up SvelteKit
 
 ```bash
-npm create svelte@latest my-app
-cd my-app
+npx sv create --no-install --template minimal --types ts --no-add-ons svelte-example
+cd svelte-example
+npx sv add eslint --no-install --cwd .
+npx sv add prettier --no-install --cwd .
 npm install
 npm run dev -- --open
 ```
 
-Select the options as you go. In this example, we set up SvelteKit with the following:
+The commands above set up SvelteKit with the following:
 
-- Skeleton project
+- Minimal skeleton project
 - Typescript
 - ESLint
 - Prettier
@@ -54,10 +56,11 @@ Now our application is available at [http://localhost:5173/](http://localhost:51
 
 ### Making it prettier _(optional)_
 
-This example uses Pico CSS for nice-looking default semantic styles.
+- This example uses [Pico CSS](https://picocss.com/) for nice-looking default semantic styles.
+- Note: Some of Pico CSS's styles alter how UserFront's pre-built web components render.
 
 ```sh
-npm install @picocss/pico@next --save
+npm install -D @picocss/pico --save
 ```
 
 
