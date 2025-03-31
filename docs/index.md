@@ -224,9 +224,9 @@ Now we can add the signup form to the home page just by adding the appropriate w
 ```svelte
 <!-- src/routes/+page.svelte -->
 
-<h1>Home</h1>
+<h1>Home (Sign Up)</h1>
 
-<signup-form />
+<signup-form redirect-on-load-if-logged-in="true"/>
 ```
 
 Now the home page has your signup form. Try signing up a user.
@@ -366,7 +366,8 @@ import { redirect } from '@sveltejs/kit';
 
 // Protected route. Redirect if not logged in.
 export const load = async ({ locals }) => {
-	if (!locals.auth) throw redirect(302, `/login`);
+	// Auth guard:
+	if (!locals.auth) redirect(302, `/login`);
 };
 
 
