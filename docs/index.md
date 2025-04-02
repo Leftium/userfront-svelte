@@ -134,7 +134,7 @@ Then add placeholders for each route:
 ```
 
 ```svelte
-<!-- src/routes/dashboard/+page -->
+<!-- src/routes/(protected)/dashboard/+page -->
 
 <h1>Dashboard</h1>
 ```
@@ -158,13 +158,19 @@ SvelteKit provides access to environment variables so we can avoid hard-coding t
 # /env.locals
 
 # Find your account (global tenant) id here: https://userfront.com/test/dashboard/settings
-PUBLIC_USERFRONT_ACCOUNT_ID=
-
-# Find your key here (use base64 version): https://userfront.com/test/dashboard/jwt
-PUBLIC_USERFRONT_PUBLIC_KEY_BASE64=
+PUBLIC_USERFRONT_ACCOUNT_ID=demo1234
 
 # Find your key here: https://userfront.com/test/dashboard/api-keys
-USERFRONT_API_KEY=
+USERFRONT_API_KEY=uf_test_admin_demo1234_7100ea25c6f...
+
+# Find your key here: https://userfront.com/test/dashboard/jwt
+PUBLIC_USERFRONT_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyvNQgi44otiNbxy2qT5R
+...
+...
+...
+NwV4FeTgNvd5FO2Yye7LigkCAwEAAQ==
+-----END PUBLIC KEY-----"
 ```
 
 
@@ -278,10 +284,10 @@ For the dashboard page, we can add information about the user by referencing the
 
 We can log the user out by calling `Userfront.logout()`.
 
-Replace the `src/routes/dashboard/+page.svelte` file with the following:
+Replace the `src/routes/(protected)/dashboard/+page.svelte` file with the following:
 
 ```svelte
-<!-- src/routes/dashboard/+page.svelte -->
+<!-- src/routes/(protected)/dashboard/+page.svelte -->
 
 <script lang="ts">
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
@@ -327,11 +333,11 @@ Usually, we don't want users to be able to view the dashboard unless they are lo
 
 Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
 
-Add the file `src/routes/dashboard/+page.server.ts` to protect the `/dashboard` route.
+Add the file `src/routes/(protected)/dashboard/+page.server.ts` to protect the `/dashboard` route.
 Each protected route needs a +page.server file like this:
 
 ```ts
-// src/routes/dashboard/+page.server.ts
+// src/routes/(protected)/dashboard/+page.server.ts
 
 import { RequireLogin } from 'userfront-svelte/sveltekit/authguard';
 
