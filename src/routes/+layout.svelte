@@ -11,8 +11,7 @@
 <main class="container">
 	<nav>
 		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/signup">Signup</a></li>
+			<li><a href="/">Home (Sign up)</a></li>
 			<li><a href="/login">Login</a></li>
 			<li><a href="/reset">Reset</a></li>
 			<li><a href="/dashboard">Dashboard</a></li>
@@ -21,9 +20,11 @@
 
 	<slot />
 
+	<hr />
+
 	<center>
 		<footer>
-			<a href="http://www.leftium.com/userfront-svelte/">Documentation</a> |
+			<a href="https://leftium.github.io/userfront-svelte">Documentation</a> |
 			<a href="https://github.com/Leftium/userfront-svelte">Source code</a>
 		</footer>
 	</center>

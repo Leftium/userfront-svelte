@@ -39,7 +39,7 @@
 <article>
 	<header>
 		<h4>{user.name || user.email}</h4>
-		<button on:click={() => Userfront.logout()}>Log out</button>
+		<button onclick={() => Userfront.logout()}>Log out</button>
 	</header>
 
 	<textarea readonly rows="6">Userfront.user = {JSON.stringify(user, null, 4)}</textarea>
@@ -53,7 +53,7 @@
 				<input bind:value={authorizationHeader} />
 			</label>
 
-			<input type="submit" on:click={handleSubmit} value="Fetch /api/update-user endpoint" />
+			<input type="submit" onclick={handleSubmit} value="Fetch /api/update-user endpoint" />
 			<small>(API response logged to dev console.)</small>
 		</form>
 	</section>

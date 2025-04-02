@@ -1,6 +1,7 @@
 # Userfront Svelte auth example
 
 Svelte port of Userfront examples based on:
+
 - [https://userfront.com/examples/react](https://userfront.com/examples/react)
 - [https://userfront.com/examples/vue](https://userfront.com/examples/vue)
 
@@ -12,15 +13,11 @@ Svelte port of Userfront examples based on:
 
 [https://github.com/Leftium/userfront-svelte](https://github.com/Leftium/userfront-svelte)
 
-
 ## Step-by-step tutorial:
 
 In this example, we will add authentication and access control to a SvelteKit application.
 
 The `userfront-svelte` package _does work with plain Svelte_, but we will use SvelteKit for setup and routing.
-
-
-
 
 ## Svelte authentication
 
@@ -30,9 +27,6 @@ At a high level, Svelte's responsibility in authentication is to:
 2. Send the JWT access token to your server with each subsequent request.
 
 ![image](https://github.com/Leftium/userfront-svelte/assets/381217/a2ad08a4-aae2-4f52-ba01-4ae733049be8)
-
-
-
 
 ## Set up SvelteKit
 
@@ -62,9 +56,6 @@ Now our application is available at [http://localhost:5173/](http://localhost:51
 ```sh
 npm install -D @picocss/pico --save
 ```
-
-
-
 
 ## Routing
 
@@ -141,9 +132,6 @@ Then add placeholders for each route:
 
 With our routes in place, we are ready to add authentication.
 
-
-
-
 ## Userfront environment variables
 
 Add the file `env.locals` to the root of your project folder and fill in your account details.
@@ -172,7 +160,6 @@ MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAyvNQgi44otiNbxy2qT5R
 NwV4FeTgNvd5FO2Yye7LigkCAwEAAQ==
 -----END PUBLIC KEY-----"
 ```
-
 
 ## Signup, login, and password reset
 
@@ -237,17 +224,11 @@ Now we can add the signup form to the home page just by adding the appropriate w
 
 Now the home page has your signup form. Try signing up a user.
 
-
-
-
 ## Test mode
 
 The form is in "Test mode" by default, which will create user records in a test environment you can view separately in your Userfront dashboard.
 
 ![image](https://github.com/Leftium/userfront-svelte/assets/381217/4928d31f-c609-4b27-af7d-5f3ba6020a56)
-
-
-
 
 ## Login and password reset
 
@@ -272,9 +253,6 @@ Continue by adding your login and password reset forms in the same way that you 
 At this point your signup, login, and password reset should all be functional.
 
 Your users can sign up, log in, and reset their password.
-
-
-
 
 ## Dashboard page
 
@@ -324,9 +302,6 @@ Replace the `src/routes/(protected)/dashboard/+page.svelte` file with the follow
 </style>
 ```
 
-
-
-
 ## Protected route in SvelteKit
 
 Usually, we don't want users to be able to view the dashboard unless they are logged in. This is known as protecting a route.
@@ -344,10 +319,9 @@ import { RequireLogin } from 'userfront-svelte/sveltekit';
 // Protected route. Redirect if not logged in. Show error when insufficient roles.
 export const load = async () => {
 	const { user, roles } = new RequireLogin();
-        console.log(user);
+	console.log(user);
 	console.log(roles);
 };
-
 ```
 
 `RequireLogin` is a special helper class. When authorization conditions are not met, the user is either redirected to the login page or shown an error.
@@ -361,9 +335,6 @@ export const load = async () => {
 ```
 
 The `RequireLogin` class may also be extended with your own methods to implement custom guard conditions.
-
-
-
 
 ### Svelte authentication with an API
 
@@ -381,7 +352,7 @@ const response = await fetch('/your-endpoint', {
 	headers: {
 		'content-type': 'application/json',
 		authorization: `Bearer ${Userfront.tokens.accessToken}`
-	},
+	}
 });
 ```
 
@@ -412,6 +383,7 @@ console.log(auth);
   exp: 1616706057
 }
 ```
+
 With this information, you can perform further checks as desired,
 or use the `userId` or `userUuid` to look up information related to the user.
 
@@ -421,24 +393,20 @@ against the `authorization` object from the verified access token:
 ```js
 // Javascript example
 
-const authorization = auth.authorization["demo1234"] || {};
+const authorization = auth.authorization['demo1234'] || {};
 
-if (authorization.roles.includes("admin")) {
-// Allow access
+if (authorization.roles.includes('admin')) {
+	// Allow access
 } else {
-// Deny access
+	// Deny access
 }
 ```
-
-
 
 ### Full SvelteKit API authentication example
 
 - [`/api/update-user` +server endpoint that reads and verifies the JWT access token](https://github.com/Leftium/userfront-svelte/blob/main/src/routes/api/update-user/%2Bserver.ts)
 - [+page that calls the endpoint](https://github.com/Leftium/userfront-svelte/blob/dc22a9425c96c6e6d6b14464c934346f03cd7c1e/src/routes/dashboard/%2Bpage.svelte#L20-L27)
 - [Live Demo](https://userfront-svelte-leftium.vercel.app)
-
-
 
 ## Svelte SSO (Single Sign On)
 
@@ -447,6 +415,3 @@ From here, you can add social identity providers like Google, Facebook, and Link
 To do this, create an application with the identity provider (e.g. Google), and then add those SSO credentials to the Userfront dashboard. The result is a modified sign on experience.
 
 No additional code is needed to implement Single Sign On using this approach: you can add and remove providers without updating your forms or the way you handle JWT access tokens.
-
-
-
