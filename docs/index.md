@@ -57,7 +57,7 @@ Now our application is available at [http://localhost:5173/](http://localhost:51
 ### Making it prettier _(optional)_
 
 - This example uses [Pico CSS](https://picocss.com/) for nice-looking default semantic styles.
-- Note: Some of Pico CSS's styles alter how UserFront's pre-built web components render.
+- Note: Some Pico CSS styles alter the appearance of UserFront's pre-built web components.
 
 ```sh
 npm install -D @picocss/pico --save
@@ -151,8 +151,8 @@ They will be used in the next steps.
 
 SvelteKit provides access to environment variables so we can avoid hard-coding them:
 
-- [$env/static/private](https://kit.svelte.dev/docs/modules#$env-static-private)
-- [$env/static/public](https://kit.svelte.dev/docs/modules#$env-static-public)
+- [$env/static/private](https://svelte.dev/docs/kit/$env-static-private)
+- [$env/static/public](https://svelte.dev/docs/kit/$env-static-public)
 
 ```sh
 # /env.locals
@@ -232,7 +232,7 @@ Now we can add the signup form to the home page just by adding the appropriate w
 
 <h1>Home (Sign Up)</h1>
 
-<signup-form redirect-on-load-if-logged-in="true"/>
+<signup-form />
 ```
 
 Now the home page has your signup form. Try signing up a user.
@@ -269,7 +269,7 @@ Continue by adding your login and password reset forms in the same way that you 
 <password-reset-form />
 ```
 
-At this point, your signup, login, and password reset should all be functional.
+At this point your signup, login, and password reset should all be functional.
 
 Your users can sign up, log in, and reset their password.
 
@@ -303,7 +303,7 @@ Replace the `src/routes/(protected)/dashboard/+page.svelte` file with the follow
 <article>
 	<header>
 		<h4>{user.name || user.email}</h4>
-		<button on:click={() => Userfront.logout()}>Log out</button>
+		<button onclick={() => Userfront.logout()}>Log out</button>
 	</header>
 
 	<textarea readonly rows="6">Userfront.user = {JSON.stringify(user, null, 4)}</textarea>
@@ -339,7 +339,7 @@ Each protected route needs a +page.server file like this:
 ```ts
 // src/routes/(protected)/dashboard/+page.server.ts
 
-import { RequireLogin } from 'userfront-svelte/sveltekit/authguard';
+import { RequireLogin } from 'userfront-svelte/sveltekit';
 
 // Protected route. Redirect if not logged in. Show error when insufficient roles.
 export const load = async () => {
