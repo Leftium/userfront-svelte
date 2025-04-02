@@ -1,5 +1,5 @@
 import { USERFRONT_API_KEY } from '$env/static/private';
-import { PUBLIC_USERFRONT_PUBLIC_KEY_BASE64 } from '$env/static/public';
+import { PUBLIC_USERFRONT_PUBLIC_KEY } from '$env/static/public';
 import { verifyToken } from '$lib/index.js';
 import { error, json } from '@sveltejs/kit';
 
@@ -14,12 +14,12 @@ export const PUT = async ({ request }) => {
 	}
 
 	// Verify the token using the Userfront public key:
-	const auth = await verifyToken(PUBLIC_USERFRONT_PUBLIC_KEY_BASE64, token);
-	if (!auth) {
+	const result = verifyToken(PUBLIC_USERFRONT_PUBLIC_KEY, token);
+	if (result.isErr()) {
 		throw error(403, 'Error validating authorization token.');
 	}
 
-	const userId = auth.userId;
+	const userId = result.value.userId;
 
 	const response = await fetch(`https://api.userfront.com/v0/users/${userId}`, {
 		method: 'PUT',

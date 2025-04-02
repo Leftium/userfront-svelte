@@ -1,4 +1,4 @@
-import * as jose from 'jose';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 
 function getCookies(cookieString: string | null) {
 	if (!cookieString) {
@@ -12,35 +12,38 @@ function getCookies(cookieString: string | null) {
 	}, {});
 }
 
-// Verify JWT token.
-// Inputs: JWT public key and JWT token.
-// Output: Decoded JWT token payload on successful verification; otherwise null.
-// Side-effects: Logs errors while verifying token.
+import { err, ok, fromThrowable } from 'neverthrow';
 
-export async function verifyToken(publicKeyBase64: string, token?: string | null) {
-	if (!token) {
-		return null;
+// Define the type for your JWT payload
+interface UserfrontJwtPayload extends JwtPayload {
+	userId: string;
+	tenantId: string; // Add any other properties you expect in the payload
+}
+
+// Create a function to verify the JWT synchronously using RS256
+const safeVerify = fromThrowable(
+	(token: string, publicKey: string): UserfrontJwtPayload => {
+		return jwt.verify(token, publicKey, { algorithms: ['RS256'] }) as UserfrontJwtPayload; // Cast to your payload type
+	},
+	(e) => e as Error
+);
+
+export function verifyToken(publicKey: string, token: string) {
+	const result = safeVerify(token, publicKey);
+	if (result.isErr()) {
+		return err(result.error);
 	}
-
-	const userfrontPublicKey = atob(publicKeyBase64);
-	const publicKey = await jose.importSPKI(userfrontPublicKey, 'RS256');
-
-	try {
-		const { payload } = await jose.jwtVerify(token, publicKey, {
-			algorithms: ['RS256']
-		});
-		return payload;
-	} catch (error) {
-		console.error(error);
+	if (typeof result.value === 'string') {
+		return err(new Error('JWT payload expected to be an object; not a string'));
 	}
-	return null;
+	return ok(result.value);
 }
 
 // Parse userfront cookie into tokens.
 // Inputs: Cookie string and tenantId.
 // Outputs: Object with token names and tokens (same format as `Userfront.tokens`)
 
-export async function userfrontCookieToTokens(cookieString: string | null, tenantId: string) {
+export function userfrontCookieToTokens(cookieString: string | null, tenantId: string) {
 	if (!cookieString) {
 		return null;
 	}

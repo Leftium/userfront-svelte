@@ -4,7 +4,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			auth: unknown;
+			hasAuthGuard?: boolean;
 		}
 		// interface PageData {}
 		// interface PageState {}

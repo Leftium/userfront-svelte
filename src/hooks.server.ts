@@ -1,22 +1,25 @@
-import {
-	PUBLIC_USERFRONT_ACCOUNT_ID,
-	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
-} from '$env/static/public';
+// hooks.server.ts
 
-import { userfrontCookieToTokens, verifyToken } from '$lib/index.js';
+import { error, type Handle } from '@sveltejs/kit';
 
-export async function handle({ event, resolve }) {
-	const cookie = event.request.headers.get('cookie');
-	const userfrontTokens = await userfrontCookieToTokens(cookie, PUBLIC_USERFRONT_ACCOUNT_ID);
+const protectedRouteRegex = /\/\(protected\)/;
 
-	// Add user auth info from UserFront JWT to SvelteKit request event.
-	// Reference:
-	// - https://github.com/sveltejs/realworld/blob/0e44badcc994adb277cd6ac274c126b89a91df8c/src/hooks.server.js#L4
-	// - https://userfront.com/examples/vue#vue-authentication-with-an-api
-	event.locals.auth = await verifyToken(
-		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
-		userfrontTokens?.accessToken
-	);
+const handleMissingAuthGuard: Handle = async ({ event, resolve }) => {
+	const isProtectedRoute = event.route.id && protectedRouteRegex.test(event.route.id);
 
-	return resolve(event);
-}
+	console.log(`HANDLE          : ${event.route.id}`);
+	console.log(`isProtectedRoute: ${isProtectedRoute}`);
+	console.log(`isDataRequest   : ${event.isDataRequest}`);
+
+	const resolved = isProtectedRoute ? await resolve(event) : await resolve(event);
+
+	console.log(`hasAuthGuard: ${event.locals.hasAuthGuard}`);
+
+	if (isProtectedRoute && !event.locals.hasAuthGuard) {
+		error(400, `Protected route is missing an auth guard. (${event.route.id})`);
+	}
+
+	return resolved;
+};
+
+export const handle = handleMissingAuthGuard;
