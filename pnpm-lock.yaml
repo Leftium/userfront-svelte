@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@sveltejs/kit':
+        specifier: ^2.20.2
+        version: 2.20.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14)))(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14))
+      userfront-svelte:
+        specifier: 'link:'
+        version: 'link:'
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -20,9 +27,6 @@ importers:
       '@sveltejs/adapter-auto':
         specifier: ^4.0.0
         version: 4.0.0(@sveltejs/kit@2.20.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14)))(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14)))
-      '@sveltejs/kit':
-        specifier: ^2.16.0
-        version: 2.20.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14)))(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14))
       '@sveltejs/package':
         specifier: ^2.0.0
         version: 2.3.10(svelte@5.25.3)(typescript@5.8.2)
