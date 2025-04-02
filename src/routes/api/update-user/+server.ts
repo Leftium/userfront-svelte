@@ -10,13 +10,13 @@ export const PUT = async ({ request }) => {
 	const authHeader = request.headers.get('authorization');
 	const token = authHeader && authHeader.split(' ')[1];
 	if (!token) {
-		throw error(401, 'Missing authorization token.');
+		error(401, 'Missing authorization token.');
 	}
 
 	// Verify the token using the Userfront public key:
 	const result = verifyToken(PUBLIC_USERFRONT_PUBLIC_KEY, token);
 	if (result.isErr()) {
-		throw error(403, 'Error validating authorization token.');
+		error(403, 'Error validating authorization token.');
 	}
 
 	const userId = result.value.userId;
