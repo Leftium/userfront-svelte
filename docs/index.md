@@ -327,51 +327,36 @@ Usually, we don't want users to be able to view the dashboard unless they are lo
 
 Whenever a user is not logged in but tries to visit `/dashboard`, we can redirect them to the login screen.
 
-`userfrontCookieToTokens()` and `verifyToken()` are helper functions that parse/decode Userfront cookies on both the server and client.
-
-
-
-Add the file `src/hooks.server.ts` to pass auth info from the UserFront JWT to SvelteKit's request event:
-
-```ts
-// src/hooks.server.ts
-
-import {
-	PUBLIC_USERFRONT_ACCOUNT_ID,
-	PUBLIC_USERFRONT_PUBLIC_KEY_BASE64
-} from '$env/static/public';
-
-import { userfrontCookieToTokens, verifyToken } from 'userfront-svelte';
-
-export async function handle({ event, resolve }) {
-	const cookie = event.request.headers.get('cookie');
-	const userfrontTokens = await userfrontCookieToTokens(cookie, PUBLIC_USERFRONT_ACCOUNT_ID);
-
-	event.locals.auth = await verifyToken(
-		PUBLIC_USERFRONT_PUBLIC_KEY_BASE64,
-		userfrontTokens?.accessToken
-	);
-
-	return resolve(event);
-}
-```
-
-Then add the file `src/routes/dashboard/+page.server.ts` to protect the `/dashboard` route.
+Add the file `src/routes/dashboard/+page.server.ts` to protect the `/dashboard` route.
 Each protected route needs a +page.server file like this:
 
 ```ts
 // src/routes/dashboard/+page.server.ts
 
-import { redirect } from '@sveltejs/kit';
+import { RequireLogin } from 'userfront-svelte/sveltekit/authguard';
 
-// Protected route. Redirect if not logged in.
-export const load = async ({ locals }) => {
-	// Auth guard:
-	if (!locals.auth) redirect(302, `/login`);
+// Protected route. Redirect if not logged in. Show error when insufficient roles.
+export const load = async () => {
+	const { user, roles } = new RequireLogin();
+        console.log(user);
+	console.log(roles);
 };
 
+```
+
+`RequireLogin` is a special helper class. When authorization conditions are not met, the user is either redirected to the login page or shown an error.
+
+The class provides several methods that restrict which users are allowed. These methods may be chained together:
 
 ```
+export const load = async () => {
+	new RequireLogin().andAdmin().andAnyRoles(['author', 'contributor']).andAllRoles(['viewer', 'owner'])
+};
+```
+
+The `RequireLogin` class may also be extended with your own methods to implement custom guard conditions.
+
+
 
 
 ### Svelte authentication with an API
