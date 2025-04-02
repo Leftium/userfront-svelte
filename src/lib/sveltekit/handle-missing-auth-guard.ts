@@ -9,7 +9,7 @@ export const handleMissingAuthGuard: Handle = async ({ event, resolve }) => {
 	console.log(`isProtectedRoute: ${isProtectedRoute}`);
 	console.log(`isDataRequest   : ${event.isDataRequest}`);
 
-	const resolved = isProtectedRoute ? await resolve(event) : await resolve(event);
+	const resolved = isProtectedRoute ? await resolve(event) : resolve(event);
 
 	console.log(`hasAuthGuard: ${event.locals.hasAuthGuard}`);
 
