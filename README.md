@@ -1,6 +1,6 @@
 # userfront-svelte: UserFront + Svelte(Kit)
 
-1. Utilities that help [UserFront auth](https://userfront.com) to a (Svelte) project:
+1. Utilities that help when adding [UserFront auth](https://userfront.com) to a (Svelte) project:
     - `RequireLogin`: auth guard that redirects/shows error when authorization requirements not met.
     - `handleMissingAuthGuard`: optional SvelteKit handle hook that prevents access of protected routes if they are missing an auth guard.
     - `UserfrontApi`: class that simplifies call to Userfront API.
