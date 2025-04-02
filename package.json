@@ -70,7 +70,6 @@
 		]
 	},
 	"dependencies": {
-		"@sveltejs/kit": "^2.20.2",
-		"userfront-svelte": "link:"
+		"@sveltejs/kit": "^2.20.2"
 	}
 }

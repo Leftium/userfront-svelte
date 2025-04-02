@@ -11,9 +11,6 @@ importers:
       '@sveltejs/kit':
         specifier: ^2.20.2
         version: 2.20.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14)))(svelte@5.25.3)(vite@6.2.4(@types/node@22.13.14))
-      userfront-svelte:
-        specifier: 'link:'
-        version: 'link:'
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
