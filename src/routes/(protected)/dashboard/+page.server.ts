@@ -1,4 +1,4 @@
-import { RequireLogin } from '$lib/sveltekit/authguard';
+import { RequireLogin } from '$lib/sveltekit';
 
 // Protected route. Redirect if not logged in. Show error when insufficient roles.
 // Reference: https://svelte.dev/docs/kit/load#Using-getRequestEvent

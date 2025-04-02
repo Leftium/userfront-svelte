@@ -1,8 +1,7 @@
 import { USERFRONT_API_KEY } from '$env/static/private';
 import { PUBLIC_USERFRONT_PUBLIC_KEY } from '$env/static/public';
 import { error, json } from '@sveltejs/kit';
-import { verifyToken } from '$lib/index.js';
-import { UserfrontApi } from '$lib/userfront-api';
+import { verifyToken, UserfrontApi } from '$lib';
 
 const userfrontApi = new UserfrontApi(USERFRONT_API_KEY);
 
