@@ -15,6 +15,6 @@
 
 *For usage, see tutorial below.*
 
-## Step-by-step Tutorial: How to Use UserfFront + Svelte(Kit):
+## Step-by-step Tutorial: How to Use Userfront + Svelte(Kit):
 
 https://leftium.github.io/userfront-svelte
