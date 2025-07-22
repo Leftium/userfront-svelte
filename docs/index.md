@@ -405,7 +405,7 @@ if (authorization.roles.includes('admin')) {
 ### Full SvelteKit API authentication example
 
 - [`/api/update-user` +server endpoint that reads and verifies the JWT access token](https://github.com/Leftium/userfront-svelte/blob/main/src/routes/api/update-user/%2Bserver.ts)
-- [+page that calls the endpoint](https://github.com/Leftium/userfront-svelte/blob/dc22a9425c96c6e6d6b14464c934346f03cd7c1e/src/routes/dashboard/%2Bpage.svelte#L20-L27)
+- [+page that calls the endpoint](https://github.com/Leftium/userfront-svelte/blob/4836e07d3fe427731e1a56ebf1feb57eefacbc10/src/routes/(protected)/dashboard/%2Bpage.svelte#L20-L27)
 - [Live Demo](https://userfront-svelte-leftium.vercel.app)
 
 ## Svelte SSO (Single Sign On)
