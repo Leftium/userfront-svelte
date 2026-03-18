@@ -1,3 +1,8 @@
+> [!CAUTION]
+> ### Userfront Auth is ending service on May 31, 2026
+> - After that date, Userfront's auth functionality will no longer be available.
+> - Alternatives for Svelte auth: https://svelte.dev/packages#auth
+
 # Userfront Svelte auth example
 
 Svelte port of Userfront examples based on:
