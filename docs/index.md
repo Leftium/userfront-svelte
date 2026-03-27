@@ -7,12 +7,12 @@
 
 Svelte port of Userfront examples based on:
 
-- [https://userfront.com/examples/react](https://userfront.com/examples/react)
-- [https://userfront.com/examples/vue](https://userfront.com/examples/vue)
+- [userfront.com/examples/react](https://userfront.com/examples/react)
+- [userfront.com/examples/vue](https://userfront.com/examples/vue)
 
 ### Live demo
 
-[https://userfront-svelte-leftium.vercel.app](https://userfront-svelte-leftium.vercel.app)
+[userfront-svelte.vercel.app](https://userfront-svelte.vercel.app)
 
 ### Source code
 
@@ -410,7 +410,7 @@ if (authorization.roles.includes('admin')) {
 
 - [`/api/update-user` +server endpoint that reads and verifies the JWT access token](https://github.com/Leftium/userfront-svelte/blob/main/src/routes/api/update-user/%2Bserver.ts)
 - [+page that calls the endpoint](https://github.com/Leftium/userfront-svelte/blob/4836e07d3fe427731e1a56ebf1feb57eefacbc10/src/routes/(protected)/dashboard/%2Bpage.svelte#L20-L27)
-- [Live Demo](https://userfront-svelte-leftium.vercel.app)
+- [Live Demo](https://userfront-svelte.vercel.app/)
 
 ## Svelte SSO (Single Sign On)
 
