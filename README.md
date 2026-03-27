@@ -12,8 +12,8 @@
     - `userfrontCookieToTokens()`: parse userfront cookie into tokens
     - `verifyToken()`: verify a JWT token; extract payload
 3. Step-by-step tutorial: how to use UserFront + Svelte(Kit):
-    - Live demo of results: https://userfront-svelte-leftium.vercel.app
- 
+    - Live demo of results: https://userfront-svelte.vercel.app
+
 ## Installation & Usage
 
 `npm install -D userfront-svelte`
