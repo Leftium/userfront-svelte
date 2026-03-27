@@ -56,7 +56,6 @@ Now our application is available at [http://localhost:5173/](http://localhost:51
 ### Making it prettier _(optional)_
 
 - This example uses [nimble.css](https://leftium.github.io/nimble.css/) for nice-looking default semantic styles.
-- Note: Some nimble.css styles may alter the appearance of UserFront's pre-built web components.
 
 ```sh
 npm install -D @leftium/nimble.css --save
