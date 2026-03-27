@@ -66,6 +66,11 @@
 		align-items: baseline;
 	}
 
+	[type="submit"] {
+		display: block;
+		width: 100%;
+	}
+
 	textarea {
 		white-space: pre;
 		overflow-wrap: normal;
