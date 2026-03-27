@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '@picocss/pico';
+	import '@leftium/nimble.css';
 
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 
@@ -31,12 +31,12 @@
 </main>
 
 <style>
-	main {
-		max-width: 600px;
-	}
-
-	nav {
+	nav ul {
+		display: flex;
+		list-style: none;
+		gap: 1rem;
 		justify-content: center;
+		padding: 0;
 	}
 
 	:global(h1) {

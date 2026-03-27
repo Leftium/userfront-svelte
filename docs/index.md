@@ -55,11 +55,11 @@ Now our application is available at [http://localhost:5173/](http://localhost:51
 
 ### Making it prettier _(optional)_
 
-- This example uses [Pico CSS](https://picocss.com/) for nice-looking default semantic styles.
-- Note: Some Pico CSS styles alter the appearance of UserFront's pre-built web components.
+- This example uses [nimble.css](https://leftium.github.io/nimble.css/) for nice-looking default semantic styles.
+- Note: Some nimble.css styles may alter the appearance of UserFront's pre-built web components.
 
 ```sh
-npm install -D @picocss/pico --save
+npm install -D @leftium/nimble.css --save
 ```
 
 ## Routing
@@ -78,7 +78,7 @@ Add `src/routes/+layout.svelte` with the following to add a simple navigation me
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
-	import '@picocss/pico';
+	import '@leftium/nimble.css';
 </script>
 
 <main class="container">
@@ -95,12 +95,12 @@ Add `src/routes/+layout.svelte` with the following to add a simple navigation me
 </main>
 
 <style>
-	main {
-		max-width: 600px;
-	}
-
-	nav {
+	nav ul {
+		display: flex;
+		list-style: none;
+		gap: 1rem;
 		justify-content: center;
+		padding: 0;
 	}
 
 	:global(h1) {
@@ -182,7 +182,7 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 <!-- src/routes/+layout.svelte --!>
 
 <script lang="ts">
-	import '@picocss/pico';
+	import '@leftium/nimble.css';
 
 	import { PUBLIC_USERFRONT_ACCOUNT_ID } from '$env/static/public';
 	import Userfront from '@userfront/toolkit/web-components';
@@ -203,12 +203,12 @@ We will use Userfront tools on multiple pages, so we can initialize it once in t
 </main>
 
 <style>
-	main {
-		max-width: 600px;
-	}
-
-	nav {
+	nav ul {
+		display: flex;
+		list-style: none;
+		gap: 1rem;
 		justify-content: center;
+		padding: 0;
 	}
 
 	:global(h1) {
